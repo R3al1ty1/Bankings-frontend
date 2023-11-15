@@ -29,9 +29,9 @@ body {
 }
 
 .content {
-  max-width: 1200px; /* Измените значение по вашему усмотрению */
+  max-width: 1200px;
   width: 100%;
-  margin: 0 auto; /* Центрирование контента */
+  margin: 0 auto;
 }
 
 h1 {

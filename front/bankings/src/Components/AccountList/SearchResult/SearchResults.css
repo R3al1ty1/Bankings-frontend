@@ -43,7 +43,7 @@
 .right-container {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Добавлено для перемещения .right-container вправо */
+    margin-left: auto;
 }
 
 .account-info-button,

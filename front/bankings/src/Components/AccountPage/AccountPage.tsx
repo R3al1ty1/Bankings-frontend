@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import {Account} from "../../Types";
 import {Dispatch} from "react";
 
-
 const AccountPage = ({ selectedAccount, setSelectedAccount }: { selectedAccount:Account | undefined, setSelectedAccount: Dispatch<Account | undefined> }) => {
     const { id } = useParams<{id?: string}>();
 
