@@ -1,5 +1,4 @@
 import "./ProfileMenu.css"
-//import user_avatar from "../Avatar.jpeg";
 import { FaChevronRight, FaQuestionCircle } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -18,7 +17,6 @@ const ProfileMenu = () => {
             <div className={"sub-menu-wrapper " + (isOpen ? "open" : "")}>
                 <div className={"sub-menu"}>
                     <div className={"user-info"}>
-                        {/* <img src={user_avatar} className={"user-avatar"} /> */}
                         <span>Коновалов Илья</span>
                     </div>
 

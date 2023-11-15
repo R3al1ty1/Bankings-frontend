@@ -1,8 +1,10 @@
 import "./Header.css";
+import * as React from 'react';
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
-import logo from "./bank-logo.png"
+// @ts-ignore
+import logo from "../../../bank-logo.png"
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
       <div className="header-wrapper">
           <div className="header-left">

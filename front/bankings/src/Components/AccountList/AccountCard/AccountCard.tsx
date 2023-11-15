@@ -48,9 +48,6 @@ const AccountCard = ({ account, setAccounts }: { account: Account, setAccounts: 
             key={account.id}>
 
             <div className="top-container">
-
-                {/* <FacultyIcon faculty_id={account.faculty}/> */}
-
             </div>
 
             <div className="center-container">

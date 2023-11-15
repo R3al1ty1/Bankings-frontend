@@ -8,7 +8,7 @@ export interface Account {
     bic: number,
     icon: string,
     available: boolean,
-    deposit?: Deposit[], // Теперь deposit - это массив Deposit или undefined
+    deposit?: Deposit[],
     save?: Save[],
     credit?: Credit[],
     card?: Card[]
@@ -29,7 +29,7 @@ export interface Deposit {
     interest_rate: number;
     creation_date: string;
     end_date: string;
-    agreement: null | any; // тип соглашения может отличаться, поставьте подходящий тип
+    agreement: null | any;
     days: number;
     number_ref: number;
 }
@@ -40,7 +40,7 @@ export interface Credit {
     payment_amount: number;
     creation_date: string;
     end_date: string;
-    agreement: null | any; // тип соглашения может отличаться, поставьте подходящий тип
+    agreement: null | any;
     payments_number: number;
     purpose: string;
     number_ref: number;

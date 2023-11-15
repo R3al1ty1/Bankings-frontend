@@ -1,8 +1,8 @@
 .account-info-wrapper {
   max-width: 600px;
-  margin: auto; /* Добавлен отступ сверху */
+  margin: auto;
   position: relative;
-  background-color: #2c2c2c; /* Цвет заголовка */
+  background-color: #2c2c2c;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -14,12 +14,9 @@
   padding: 20px;
 }
 
-
-
 .account-info-details {
   display: flex;
   flex-direction: column;
-  /*align-items: center;*/
 }
 
 
@@ -72,7 +69,7 @@
 }
 .buttons-info{
   display: flex;
-  flex-direction: row; /* убедитесь, что направление - горизонтальное */
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
@@ -109,6 +106,7 @@
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 20px;
 }
 
 .account-icon {
