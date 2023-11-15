@@ -1,0 +1,51 @@
+.accounts-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #1e1e1e; /* Dark background color */
+    color: #ffffff; /* Text color */
+  }
+  
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  h3 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .filters-container input {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  
+  .filters-container button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3f51b5; /* Primary button color */
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .bottom {
+    /* Add styles as needed */
+  }
+  
+  .account-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }

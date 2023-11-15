@@ -1,0 +1,11 @@
+.account-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1e1e1e; /* Dark background color */
+    color: #ffffff;
+  }
+  
+  /* Add more specific styles for your components if necessary */
+  

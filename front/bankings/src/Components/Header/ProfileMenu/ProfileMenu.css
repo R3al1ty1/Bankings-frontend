@@ -1,0 +1,157 @@
+.profile-menu-wrapper {
+  .user-avatar-container {
+    margin-top: 10px;
+    width: 60px;
+    height: 60px;
+    background: #1e1e1e;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &:hover span {
+      filter: blur(14px);
+    }
+
+    .user-avatar {
+      width: 1000px;
+      height: 55px;
+      border-radius: 50%;
+      cursor: pointer;
+      background-size: cover;
+      z-index: 10;
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      border-radius: 50%;
+      transition: blur 0.3s ease;
+    }
+  }
+
+  .sub-menu-wrapper {
+    position: absolute;
+    top: 100%;
+    right: 50px;
+    width: 320px;
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+    border-radius:8px;
+      border: 2px solid #ffffff;
+
+    @media screen and (max-width: 769px) {
+      right: 0;
+    }
+
+    @media screen and (max-width: 520px) {
+      width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      z-index: 1000;
+      right: -100%;
+      transition: right 0.5s;
+    }
+
+    &.open {
+      max-height: 400px;
+
+      @media screen and (max-width: 520px) {
+        max-height: 100vh;
+        height: 100vh;
+        right: 0;
+      }
+    }
+
+    .sub-menu {
+      background: #2c2c2c;
+      padding: 20px;
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 15px;
+
+      @media screen and (max-width: 520px) {
+        margin: 0;
+        height: 100vh;
+        border-radius: 0;
+      }
+
+      &:after {
+        position: absolute;
+        content: '';
+        height: 20px;
+        width: 20px;
+        background: #2a2f3b;
+        right: 70px;
+        top: 5px;
+        transform: rotate(45deg);
+        z-index: -1;
+
+        @media screen and (max-width: 769px) {
+          right: 40px;
+        }
+
+        @media screen and (max-width: 520px) {
+          display: none;
+        }
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        color: #ccc;
+        
+
+        img {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          margin-right: 15px;
+        }
+      }
+
+      
+      .sub-menu-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        width: 100%;
+        color: #ccc;
+        padding: 10px;
+
+        &:hover span {
+          font-weight: 600;
+        }
+
+        .right-icon {
+          transform: translateX(5px);
+        }
+
+        .left-icon {
+          width: 40px;
+          margin-right: 15px;
+          font-size: 20px;
+        }
+
+        span {
+          width: 100%;
+          font-size: 20px;
+        }
+
+        .right-icon {
+          font-size: 20px;
+          transition: transform 0.5s;
+        }
+      }
+    }
+  }
+}
