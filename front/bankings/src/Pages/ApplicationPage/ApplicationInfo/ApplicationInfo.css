@@ -1,0 +1,73 @@
+.application-info-background {
+    background: #1e1e1e;
+    padding: 20px;
+}
+
+.application-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.application-info-details {
+    background: #2e2e2e;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.header-name h3 {
+    color: #ffffff;
+}
+
+.application-info-additional table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.application-info-additional th,
+.application-info-additional td {
+    padding: 10px;
+    text-align: center;
+
+}
+
+.application-info-additional th {
+    background: #2e2e2e;
+    color: #dddddd;
+}
+
+.application-info-additional td {
+    background: #2e2e2e;
+    color: #dddddd;
+}
+
+.application-info-additional tbody tr:hover {
+    background-color: #2e2e2e;
+
+}
+
+.buttons-info {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 180px;
+}
+
+.application-back-button {
+    background: #2e2e2e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #61dafb;
+}
+
+.application-back-button:hover {
+    background: #1a1a1a;
+}

@@ -1,0 +1,45 @@
+.table-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background: #2e2e2e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table thead tr {
+    background: #2e2e2e;
+}
+
+.orders-table th {
+    padding: 20px;
+    user-select: none;
+    gap: 10px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.orders-table tbody tr {
+    transition: 0.2s ease;
+    color: #cccccc;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #111111;
+}
+
+.orders-table tbody td {
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
