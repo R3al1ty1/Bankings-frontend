@@ -1,3 +1,5 @@
+import {AxiosResponse} from "axios";
+
 export interface Account {
     id: number,
     type: string,
@@ -52,6 +54,16 @@ export interface Save {
     number_ref: number;
   }
 
+
+export interface Application {
+    id: number,
+    status: number,
+    accounts: Account[],
+    creation_date: string,
+    procession_date: string,
+    completion_date: string,
+}
+
 export type AccountsContextType = {
     accounts: Account[],
     setAccounts: React.Dispatch<React.SetStateAction<Account[] | []>>
@@ -67,7 +79,21 @@ export type SelectedAccountContextType = {
     setSelectedAccount: React.Dispatch<React.SetStateAction<Account | null>>
 }
 
+export interface Option {
+    id: number,
+    name: string
+}
+
+export interface DropdownMenuList {
+    options: Option[],
+    defaultTitle: string,
+    appendDefaultTitle: boolean,
+    setSelectedOption: (id: number) => void,
+    isDisabled: boolean
+}
 export const iSelectedAccountContextState = {
     selectedAccount: null,
     setSelectedAccount: () => {}
 }
+
+export type Response<T = any> = Promise<AxiosResponse<T>> | any;

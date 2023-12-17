@@ -1,11 +1,12 @@
 import {Link} from "react-router-dom";
-import {Account} from "../../../Types.js";
+import {Account} from "../../../Types";
 import {useContext} from "react";
 import {AccountsContext} from "../AccountList";
 import "./SearchResults.css"
+import {useToken} from "../../../hooks/useToken";
 
 const SearchResult = ({ account }: { account: Account }) => {
-
+    const {access_token} = useToken()
     const { setAccounts } = useContext(AccountsContext)
     function getCurrencySymbol(currencyCode: number) {
         switch (currencyCode) {
@@ -23,10 +24,13 @@ const SearchResult = ({ account }: { account: Account }) => {
     function formatCurrency(amount: number) {
         return amount.toLocaleString('en-US');
     }
-
     const onDelete = () => {
         fetch(`http://127.0.0.1:8000/api/accounts/${account.id}/delete/`, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'authorization': access_token
+            },
         })
             .then((response) => {
                 if (response.ok){

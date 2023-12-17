@@ -1,26 +1,46 @@
 import { Link, useLocation } from "react-router-dom";
 import "./Breadcrumbs.css"
-import {Account} from "../../Types";
-import {Dispatch} from "react";
+import {FaChevronRight} from "react-icons/fa";
+import {useAccount} from "../../hooks/useAccount";
 
-const Breadcrumbs = ({ selectedAccount, setSelectedAccount }: { selectedAccount:Account | undefined, setSelectedAccount: Dispatch<Account | undefined> }) => {
+const Breadcrumbs = () => {
+
+    const { account, setAccount } = useAccount()
+
+    const resetSelectedAccount = () => setAccount(undefined)
+
     const location = useLocation()
 
     let currentLink = ''
+
+    type Topics = {
+        [key: string]: string;
+    };
+
+    const topics: Topics = {
+        accounts: "Счета",
+        draft: "Черновик",
+        home: "Главная",
+        profile: "Профиль",
+        login: "Вход",
+        register: "Регистрация"
+    };
 
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
         currentLink += `/${crumb}`
 
-        if (crumb == "accounts")
+        if (Object.keys(topics).find(x => x == crumb))
         {
             return (
                 <div className={"crumb"} key={crumb}>
 
-                    <Link to={currentLink} onClick={() => setSelectedAccount(undefined)}>
-                        Счета
+                    <Link to={currentLink} onClick={resetSelectedAccount}>
+                        {topics[crumb]}
                     </Link>
 
+
+                    <FaChevronRight className={"chevron-icon"}/>
 
                 </div>
             )
@@ -32,9 +52,10 @@ const Breadcrumbs = ({ selectedAccount, setSelectedAccount }: { selectedAccount:
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        { selectedAccount?.name}
+                        Счет { account?.name}
                     </Link>
 
+                    <FaChevronRight className={"chevron-icon"}/>
 
                 </div>
             )
@@ -43,15 +64,9 @@ const Breadcrumbs = ({ selectedAccount, setSelectedAccount }: { selectedAccount:
 
     return (
         <div className={"breadcrumbs-wrapper"}>
-            <div className={"breadcrumbs"}>
+            <div className="breadcrumbs">
 
                 <div className="crumb">
-
-                    <Link to={"/"}>
-
-                    </Link>
-
-
 
                 </div>
 

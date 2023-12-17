@@ -3,42 +3,44 @@ import * as React from 'react'
 import {useEffect, useState} from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import SearchResultsList from "./SearchResultsList/SearchResultsList";
+import {Response} from "../../Types";
 import {Account,AccountsContextType, iAccountsContextState} from "../../Types";
-import {iAccountMock} from "../../Consts";
+import {requestTime} from "../../Consts";
+import axios from "axios";
+import {useToken} from "../../hooks/useToken";
 
 export const AccountsContext = React.createContext<AccountsContextType>(iAccountsContextState)
 
 const AccountList = () => {
 
+    const {access_token} = useToken()
+
     const [accounts, setAccounts] = useState<Account[]>([]);
 
     const [query, setQuery] = useState<string>("");
 
-    const searchAccounts = () => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-    
-        setTimeout(() => {
-            controller.abort(); // Прерываем запрос через определенное время (например, 30 секунд)
-        }, 30000); // 30000 миллисекунд = 30 секунд
-    
-        fetch(`http://127.0.0.1:8000/api/accounts/search?query=${query}`, { signal })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-    
-                throw new Error('Something went wrong');
+    const searchAccounts = async () => {
+
+        try {
+
+            const response:Response = await axios(`http://127.0.0.1:8000/api/accounts/search?query=${query}`, {
+                method: "GET",
+                signal: AbortSignal.timeout(requestTime),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Authorization': access_token
+                },
             })
-            .then((results) => {
-                setAccounts(results);
-            })
-            .catch((error) => {
-                console.log(error);
-                const mockAccount = iAccountMock;
-                setAccounts([mockAccount]);
-            });
-    };
+
+            if (response.status == 200){
+                setAccounts(response.data)
+            }
+
+        } catch (e) {
+
+
+        }
+    }
 
     useEffect(() => {
         searchAccounts()

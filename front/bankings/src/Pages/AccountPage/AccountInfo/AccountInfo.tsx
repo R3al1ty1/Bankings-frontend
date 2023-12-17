@@ -4,11 +4,12 @@ import {Account} from "../../../Types";
 import { iAccountsMock, requestTime} from "../../../Consts";
 import { useNavigate } from 'react-router-dom';
 import {Link} from "react-router-dom";
+import {useToken} from "../../../hooks/useToken";
 const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ account_id:number | undefined, selectedAccount:Account| undefined, setSelectedAccount:Dispatch<Account | undefined> }) => {
 
-
+    const {access_token} = useToken()
     const [isMock, setIsMock] = useState<boolean>(true);
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrl] = useState('');
     const navigate = useNavigate();
 
     function getCurrencySymbol(currencyCode: number) {
@@ -51,10 +52,15 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
         }
 
     };
+    const icon = `http://127.0.0.1:8000/api/icon/${selectedAccount?.type}/`;
     const onDelete = () => {
         if (selectedAccount) {
             fetch(`http://127.0.0.1:8000/api/accounts/${selectedAccount.id}/delete/`, {
-            method: "PUT"
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'authorization': access_token
+            },
         })
             .then((response) => {
                 if (response.ok){
@@ -80,15 +86,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
 
     useEffect(() => {
         fetchData()
-        if (selectedAccount?.icon) {
-            const binaryData = selectedAccount.icon;
-            const url = URL.createObjectURL(new Blob([binaryData]));
-            setImageUrl(url);
-            return () => {
-              URL.revokeObjectURL(url);
-            };
-          }
-      }, [selectedAccount?.icon]);
+      }, []);
 
 
     if (!selectedAccount){
@@ -132,7 +130,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
                     <div className="account-info-details">
                         <div className="header-name"><h3> {selectedAccount.type} {selectedAccount.name}</h3></div>
                         <div className="image-balance">
-                            <img src={`data:image/jpeg;base64, ${selectedAccount.icon}`} className="account-icon" alt="Account Icon" />
+                            <img src={icon} className="account-icon" alt="Account Icon" />
                             <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
                         </div>
                         <div className="account-info-additional">
@@ -169,7 +167,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
                 <div className="account-info-details">
                     <div className="header-name"><h3> {selectedAccount.type} {selectedAccount.name}</h3></div>
                     <div className="image-balance">
-                        <img src={`data:image/jpeg;base64, ${selectedAccount.icon}`} className="account-icon" alt="Account Icon" />
+                        <img src={icon} className="account-icon" alt="Account Icon" />
                         <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
                     </div>
                     <div className="account-info-additional">
@@ -204,7 +202,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
                 <div className="account-info-details">
                     <div className="header-name"><h3> {selectedAccount.type} {selectedAccount.name}</h3></div>
                     <div className="image-balance">
-                        <img src={`data:image/jpeg;base64, ${selectedAccount.icon}`} className="account-icon" alt="Account Icon" />
+                        <img src={icon} className="account-icon" alt="Account Icon" />
                         <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
                     </div>
                     <div className="account-info-additional">
@@ -236,7 +234,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }:{ accou
                     <div className="account-info-details">
                         <div className="header-name"><h3> {selectedAccount.type} {selectedAccount.name}</h3></div>
                         <div className="image-balance">
-                            <img src={`data:image/jpeg;base64, ${selectedAccount.icon}`} className="account-icon" alt="Account Icon" />
+                            <img src={icon} className="account-icon" alt="Account Icon" />
                             <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
                         </div>
                         <div className="account-info-additional">

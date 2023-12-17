@@ -15,6 +15,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'static',
+    rollupOptions: {
+      external: ['ru'],
+    },
   },
   plugins: [react()],
 });
