@@ -16,63 +16,6 @@ export const iAccountMock = {
         save: []
 }
 
-export const COURSES = [
-    {
-        id: 1,
-        name: "Первый"
-    },
-    {
-        id: 2,
-        name: "Второй"
-    },
-    {
-        id: 3,
-        name: "Третий"
-    },
-    {
-        id: 4,
-        name: "Четвертый"
-    },
-]
-
-export const EDUCATION_TYPES = [
-    {
-        id: 1,
-        name: "Бакалавриат"
-    },
-    {
-        id: 2,
-        name: "Специалитет"
-    },
-    {
-        id: 3,
-        name: "Магистратура"
-    },
-]
-
-export const iFacultiesMock = [
-    {
-        id: 1,
-        name: "ИУ"
-    },
-    {
-        id: 2,
-        name: "СМ"
-    },
-    {
-        id: 3,
-        name: "РК"
-    },
-    {
-        id: 4,
-        name: "ИБМ"
-    },
-    {
-        id: 5,
-        name: "МТ"
-    }
-]
-
 export const iAccountsMock = [
     {
         id: 1,
@@ -140,4 +83,32 @@ export const iAccountsMock = [
         icon: "icon",
         available: true
     },
+]
+
+interface Option {
+    id: number;
+    name: string;
+}
+
+export const STATUSES : Option[] = [
+    {
+        id: 1,
+        name: "Черновик"
+    },
+    {
+        id: 2,
+        name: "В работе"
+    },
+    {
+        id: 3,
+        name: "Завершена"
+    },
+    {
+        id: 4,
+        name: "Отклонена"
+    },
+    {
+        id: 5,
+        name: "Удалена"
+    }
 ]
