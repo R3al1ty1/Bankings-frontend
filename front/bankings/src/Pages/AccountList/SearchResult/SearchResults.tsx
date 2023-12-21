@@ -47,10 +47,11 @@ const SearchResult = ({ account }: { account: Account }) => {
             });
     }
 
-    if (account.type = "Карта") {
+    if (account.type === "Карта") {
+        const icon = `http://127.0.0.1:8000/api/icon/Карта/`;
         return (
             <div className="account" key={account.id}>
-                <img src={`data:image/jpeg;base64, ${account.icon}`} className="account-image" alt="Account Logo" />
+                <img src={icon} className="account-image" alt="Account Logo" />
                 <div className="left-container">
                     <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
                     <span className="account-name">{account.name}
@@ -72,9 +73,11 @@ const SearchResult = ({ account }: { account: Account }) => {
 
         );
     }
+    const icon = `http://127.0.0.1:8000/api/icon/${account.type}/`;
     return (
-        <div className="account" key={account.id}>
 
+        <div className="account" key={account.id}>
+            <img src={icon} className="account-image" alt="Account Logo" />
             <div className="left-container">
                 <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
                 <span className="account-name">{account.name}</span>

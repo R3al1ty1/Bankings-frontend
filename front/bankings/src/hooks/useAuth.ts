@@ -5,17 +5,21 @@ import axios from "axios";
 import {useToken} from "./useToken";
 
 export function useAuth() {
-    const {is_authenticated, is_moderator, user_id, user_name, user_email} = useSelector((state: any) => state.user);
+    const userState = useSelector((state: any) => state.user) || {};
+    console.log('User State:', userState);
+
+    const { is_authenticated, is_moderator, user_id, user_name, user_email } = userState;
+    console.log('is_moderator:', is_moderator);
 
     const dispatch = useDispatch()
+
+    const { access_token } = useToken()
 
     const setUser = (value: any) => {
         dispatch(updateUser(value))
     }
 
     const sendRequest = async() => {
-
-        const { access_token } = useToken()
 
         try {
 

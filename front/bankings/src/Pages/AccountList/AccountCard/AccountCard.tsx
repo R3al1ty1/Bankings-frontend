@@ -85,10 +85,6 @@ const AccountCard = ({ account, setAccounts }: { account: Account, setAccounts: 
     return (
         <motion.div
             layout
-            animate={{ opacity: 1, scale: 1 }}
-            initial={{ opacity: 0, scale: 0 }}
-            exit={{ opacity: 0, scale: 0 }}
-            whileHover={{scale: 1.1}}
             className="account"
             key={account.id}>
 

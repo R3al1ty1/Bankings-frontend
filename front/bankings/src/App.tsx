@@ -23,6 +23,16 @@ import {Account, Application} from "Types";
 import {useState} from "react";
 import ApplicationPage from "./Pages/ApplicationPage/ApplicationPage";
 
+// const PrivateRoute: React.FC<{
+// 	path: string;
+// 	element: React.ReactNode;
+// }> = ({ path, element }) => {
+// 	const { is_authenticated } = useAuth();
+//
+// 	return is_authenticated ? <Route path={path} element={element} /> : <Navigate to="/login" replace key="/login" />;
+// };
+
+
 const LoginFormLayout = () => {
 	return (
 		<div className="login-wrapper">
@@ -32,13 +42,13 @@ const LoginFormLayout = () => {
 }
 
 const TopPanelWrapper = () => {
-	const {is_authenticated} = useAuth()
+	const {is_authenticated, is_moderator} = useAuth()
 	const location = useLocation()
 
 	return (
 		<div className="top-panels-wrapper">
-			<Breadcrumbs />
-			{is_authenticated && location.pathname.includes("accounts") && <ApplicationConstructor /> }
+			{is_authenticated && <Breadcrumbs />}
+			{is_authenticated && !is_moderator && location.pathname.includes("accounts") && <ApplicationConstructor /> }
 		</div>
 	)
 }
@@ -48,6 +58,7 @@ const TopPanelWrapper = () => {
 function App() {
 	const [selectedApplication, setSelectedApplication] = useState<Application | undefined>(undefined);
 	const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(undefined);
+	const {is_authenticated} = useAuth()
 	const queryClient = new QueryClient()
 
 	return (
@@ -78,23 +89,23 @@ function App() {
 
 										<Route path="" element={<Navigate to="login/" replace />} />
 
-										<Route path="login/" element={<SignIn />} />
+										{!is_authenticated && <Route path="login/" element={<SignIn />} />}
 
-										<Route path="register/" element={<SignUp />} />
+										{!is_authenticated && <Route path="register/" element={<SignUp />} />}
 
 									</Route>
 
 									<Route path="/home" element={<OfferPage />} />
 
-									<Route path="/applications" element={<ApplicationsPage />} />
+									{is_authenticated && <Route path="/applications" element={<ApplicationsPage />} />}
 
-									<Route path="/applications/:id" element={<ApplicationPage selectedApplication={selectedApplication} setSelectedApplication={setSelectedApplication}/>} />
+									{is_authenticated && <Route path="/applications/:id" element={<ApplicationPage selectedApplication={selectedApplication} setSelectedApplication={setSelectedApplication}/>} />}
 
-									<Route path="/applications/draft" element={<DraftApplicationPage />} />
+									{is_authenticated && <Route path="/applications/draft" element={<DraftApplicationPage />} />}
 
-									<Route path="/accounts/" element={<AccountListPage />} />
+									{is_authenticated && <Route path="/accounts/" element={<AccountListPage />} />}
 
-									<Route path="/accounts/:id" element={<AccountPage selectedAccount={selectedAccount} setSelectedAccount={setSelectedAccount} />} />
+									{is_authenticated && <Route path="/accounts/:id" element={<AccountPage selectedAccount={selectedAccount} setSelectedAccount={setSelectedAccount} />} />}
 
 
 								</Routes>

@@ -1,11 +1,12 @@
 import {ApplicationsTable} from "./Table/Table";
 
-const Applications = () => {
+
+const ApplicationsList = () => {
     return (
         <div>
-            <ApplicationsTable />
+            {<ApplicationsTable />}
         </div>
-    )
+    );
 }
 
-export default Applications;
+export default ApplicationsList;
