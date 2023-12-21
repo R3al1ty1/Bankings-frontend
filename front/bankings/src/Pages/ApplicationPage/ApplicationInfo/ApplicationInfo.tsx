@@ -3,13 +3,29 @@ import {Dispatch, useEffect} from "react";
 import {Application} from "../../../Types";
 import {requestTime, STATUSES} from "../../../Consts";
 import {Link} from "react-router-dom";
+import {useAuth} from "../../../hooks/useAuth";
+import {useApplicationForm} from "../../../hooks/useApplicationForm";
+
 const ApplicationInfo = ({ application_id, selectedApplication, setSelectedApplication }:{ application_id:number | undefined, selectedApplication:Application| undefined, setSelectedApplication:Dispatch<Application | undefined> }) => {
+    const {is_moderator} = useAuth()
+    const {acceptApplication, dismissApplication} = useApplicationForm()
 
     const getStatusName = (statusId: number | undefined): string => {
         const foundStatus = STATUSES.find((status) => status.id === statusId);
         return foundStatus ? foundStatus.name : "Неизвестный статус";
     };
 
+    const handleAcceptClick = () => {
+        if (selectedApplication) {
+            acceptApplication(selectedApplication.id);
+        }
+    };
+
+    const handleDismissClick = () => {
+        if (selectedApplication) {
+            dismissApplication(selectedApplication.id);
+        }
+    };
     const fetchData = async () => {
 
         try {
@@ -83,6 +99,20 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
                                         <button className="application-back-button">Вернуться к заявкам</button>
                                     </Link>
                                 </div>
+                                    {is_moderator && selectedApplication.status == 2 &&
+                                        <div className="buttons-container">
+                                            <Link to={`/applications/`}>
+                                            <button className="accept-button" onClick={handleAcceptClick}>
+                                                Принять
+                                            </button>
+                                            </Link>
+                                            <Link to={`/applications/`}>
+                                            <button className="dismiss-button" onClick={handleDismissClick}>
+                                                Отклонить
+                                            </button>
+                                            </Link>
+                                        </div>
+                                    }
                             </div>
                         </div>
 

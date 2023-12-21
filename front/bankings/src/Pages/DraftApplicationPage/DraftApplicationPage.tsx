@@ -27,7 +27,7 @@ const DraftApplicationPage = () => {
     {
         return (
             <div className="order-page-wrapper">
-                <h1>Пусто</h1>
+                <h1>Здесь пока пусто...</h1>
             </div>
         )
     }

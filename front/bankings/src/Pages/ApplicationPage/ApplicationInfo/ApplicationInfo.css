@@ -54,7 +54,6 @@
 .buttons-info {
     display: flex;
     justify-content: space-between;
-    margin-left: 180px;
 }
 
 .application-back-button {
@@ -69,5 +68,40 @@
 }
 
 .application-back-button:hover {
+    background: #1a1a1a;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px;
+}
+
+.accept-button {
+    background: #2e2e2e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #9ACD32;
+}
+
+.accept-button:hover {
+    background: #1a1a1a;
+}
+
+.dismiss-button {
+    background: #2e2e2e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #B22222;
+}
+
+.dismiss-button:hover {
     background: #1a1a1a;
 }

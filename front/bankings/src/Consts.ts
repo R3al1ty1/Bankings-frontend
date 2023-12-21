@@ -101,14 +101,14 @@ export const STATUSES : Option[] = [
     },
     {
         id: 3,
-        name: "Завершена"
+        name: "Одобрен"
     },
     {
         id: 4,
-        name: "Отклонена"
+        name: "Отклонен"
     },
     {
         id: 5,
-        name: "Удалена"
+        name: "Удален"
     }
 ]

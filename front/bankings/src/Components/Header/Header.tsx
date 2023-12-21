@@ -16,7 +16,7 @@ const Header: React.FC = () => {
 
     const {access_token, refresh_token} = useToken()
 
-    const {is_authenticated, setUser} = useAuth()
+    const {is_moderator, is_authenticated, setUser} = useAuth()
 
     const {setApplication} = useDraftApplication()
 
@@ -27,7 +27,7 @@ const Header: React.FC = () => {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
-                    'authorization': access_token
+                    'Authorization': access_token
                 },
             })
 
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
-                    'authorization': refresh_token
+                    'Authorization': refresh_token
                 },
             })
 
@@ -116,6 +116,31 @@ const Header: React.FC = () => {
     }, []);
 
     const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    if (is_moderator) {
+        return (
+            <div className="header-wrapper">
+                <div className="header-left">
+                    <img src={logo} className="logo" alt="Bank Logo"/>
+                    <div>
+                        <h1 className="header-title">INK Bank</h1>
+                    </div>
+                </div>
+
+                <div className="header-links">
+                    <Link to="/applications" className="header-menu-link" style={{textDecoration: 'none'}}>
+                        <span className="item">Заявки</span>
+                    </Link>
+
+                    <Link to="/accounts" className="header-menu-link" style={{textDecoration: 'none'}}>
+                        <span className="item">Счета</span>
+                    </Link>
+                </div>
+
+                <ProfileMenu/>
+            </div>
+        );
+    }
 
     if (is_authenticated) {
 

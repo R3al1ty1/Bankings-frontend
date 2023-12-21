@@ -1,92 +1,157 @@
 // @ts-ignore
-import {TableInstance, useTable, usePagination} from "react-table"
+import { TableInstance, useTable, usePagination } from 'react-table';
 // @ts-ignore
-import React, {useMemo} from "react";
-import "./Table.css"
-import axios from "axios";
-import {STATUSES} from "../../../Consts";
+import React, { useMemo, useState, useEffect } from 'react';
+import './Table.css';
+import axios from 'axios';
+import { STATUSES } from '../../../Consts';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
-import {useQuery} from "react-query";
-import {useToken} from "../../../hooks/useToken";
+import { useToken } from '../../../hooks/useToken';
+import { useAuth } from '../../../hooks/useAuth';
+
+interface Application {
+    id: number;
+    status: number;
+    accounts: { name: string }[];
+    creation_date: string;
+    // Добавьте другие свойства при необходимости
+}
 
 export const ApplicationsTable = () => {
+    const { access_token } = useToken();
+    const { is_moderator } = useAuth();
+    const [data, setData] = useState<Application[]>([]);
+    const [filteredData, setFilteredData] = useState<Application[]>([]);
+    const [startDate, setStartDate] = useState<string | null>(null);
+    const [endDate, setEndDate] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+    const [, setError] = useState<Error | null>(null);
+    const [, setIsLoading] = useState(true);
 
-    const { access_token } = useToken()
+    const fetchApplicationsData = async () => {
+        try {
+            const apiUrl = is_moderator
+                ? 'http://127.0.0.1:8000/api/applications/mod'
+                : 'http://127.0.0.1:8000/api/applications/';
+
+            const params: Record<string, any> = {};
+
+            if (startDate) {
+                params.start_date = startDate;
+            }
+
+            if (endDate) {
+                params.end_date = endDate;
+            }
+
+            if (selectedStatus) {
+                params.status = selectedStatus;
+            }
+
+            const { data } = await axios.get<Application[]>(apiUrl, {
+                headers: {
+                    authorization: `${access_token}`,
+                },
+                params,
+            });
+
+            setData(data);
+        } catch (error) {
+            setError(error as Error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchApplicationsData();
+    }, [access_token, is_moderator, startDate, endDate, selectedStatus]);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            fetchApplicationsData();
+        }, 10000); // Интервал обновления данных каждые 10 секунд
+
+        return () => clearInterval(intervalId);
+    }, [access_token, is_moderator, startDate, endDate, selectedStatus]);
+
+    useEffect(() => {
+        // Фильтрация данных при изменении фильтров
+        let filteredApplications = data;
+
+        if (startDate) {
+            filteredApplications = filteredApplications.filter(
+                (application) => new Date(application.creation_date) >= new Date(startDate)
+            );
+        }
+
+        if (endDate) {
+            filteredApplications = filteredApplications.filter(
+                (application) => new Date(application.creation_date) <= new Date(endDate)
+            );
+        }
+
+        if (selectedStatus) {
+            filteredApplications = filteredApplications.filter(
+                (application) => application.status === parseInt(selectedStatus, 10)
+            );
+        }
+
+        setFilteredData(filteredApplications);
+    }, [data, startDate, endDate, selectedStatus]);
 
     const COLUMNS = [
         {
-            Header: "№",
-            accessor: "id"
+            Header: '№',
+            accessor: 'id',
+            Cell: ({ value, row }: { value?: number; row: any }) => (
+                <Link to={`/applications/${row.original.id}`}>{value}</Link>
+            ),
         },
         {
-            Header: "Статус",
-            accessor: "status",
+            Header: 'Статус',
+            accessor: 'status',
             Cell: ({ value }: { value?: number }) => {
                 const foundStatus = STATUSES.find((status) => status.id === value);
-                return foundStatus ? foundStatus.name : "Неизвестный статус";
-            }
-
+                return foundStatus ? foundStatus.name : 'Неизвестный статус';
+            },
         },
         {
-            Header: "Счета",
-            accessor: "accounts",
+            Header: 'Счета',
+            accessor: 'accounts',
             Cell: ({ value }: { value?: { name: string }[] }) => {
                 if (value) {
                     return value.map((account) => account.name).join(', ');
                 }
-                return "Нет счетов";
-            }
-
+                return 'Нет счетов';
+            },
         },
         {
-            Header: "Дата формирования",
-            accessor: "creation_date",
+            Header: 'Дата формирования',
+            accessor: 'creation_date',
             Cell: ({ value }: { value?: string }) => {
-
                 if (value) {
                     const parsedDate = format(new Date(value), "d MMMM yyyy 'г.'", { locale: ruLocale });
                     return parsedDate;
                 }
-                return "Нет даты";
-            }
-        }
-    ]
-    const fetchApplicationsData = async () => {
-
-        const {data} = await axios(`http://127.0.0.1:8000/api/applications/`, {
-            method: "GET",
-            headers: {
-                'authorization': `${access_token}`
-            }
-        })
-
-        return data
-
-    }
-
-    const { isLoading, error, data, isSuccess } = useQuery(
-        ['applications'],
-        () => fetchApplicationsData(),
-        {
-            keepPreviousData: true,
-        }
-    );
-
-    const tableColumns = useMemo(() => COLUMNS, [])
-
-    const tableInstance = useTable<TableInstance>({
-        columns:tableColumns,
-        data: isSuccess ? data : [],
-        initialState: {
-            pageIndex: 0,
-            pageSize: 10
+                return 'Нет даты';
+            },
         },
-        manualPagination: true,
-        pageCount: 1,
-    }, usePagination)
+    ];
 
+    const tableColumns = useMemo(() => COLUMNS, []);
+
+    const tableInstance = useTable<TableInstance>(
+        {
+            columns: tableColumns,
+            data: filteredData, // Используйте отфильтрованные данные
+            manualPagination: true,
+            pageCount: 1,
+        },
+        usePagination
+    );
 
     const {
         getTableProps,
@@ -94,65 +159,73 @@ export const ApplicationsTable = () => {
         headerGroups,
         page,
         prepareRow,
-    } = tableInstance
+    } = tableInstance;
 
+    const handleStartDateChange = (date: string) => {
+        setStartDate(date);
+    };
 
-    if (error) {
-        return <p>Error</p>;
-    }
+    const handleEndDateChange = (date: string) => {
+        setEndDate(date);
+    };
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
+    const handleStatusChange = (status: string) => {
+        setSelectedStatus(status);
+    };
 
     return (
         <div className="table-wrapper">
+            <div className="filters">
+                <label>
+                    Стартовая дата:
+                    <input className="start-date" type="date" onChange={(e) => handleStartDateChange(e.target.value)} />
+                </label>
+                <label>
+                    Конечная дата:
+                    <input className="end-date" type="date" onChange={(e) => handleEndDateChange(e.target.value)} />
+                </label>
+                <label>
+                    Статус:
+                    <select className="status-box" onChange={(e) => handleStatusChange(e.target.value)}>
+                        <option value="">Все</option>
+                        {STATUSES.map((status) => (
+                            <option key={status.id} value={status.id}>
+                                {status.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
 
             <table {...getTableProps()} className="orders-table">
                 <thead>
-                {
-                    headerGroups.map((headerGroup: any) => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column: any) => (
-                                <th {...column.getHeaderProps()}>
-                                    {column.render('Header')}
-                                </th>
-                            ))}
-                        </tr>
-                    ))
-
-                }
+                {headerGroups.map((headerGroup: any) => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column: any) => (
+                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        ))}
+                    </tr>
+                ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
                 {page.map((row: any) => {
                     prepareRow(row);
                     return (
                         <tr {...row.getRowProps()} key={row.id}>
-                            {row.cells.map((cell: any) => {
-                                const isIdCell = cell.column.id === 'id';
-                                return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        key={cell.column.id}
-                                        style={{ cursor: isIdCell ? 'pointer' : 'default' }}
-                                    >
-                                        {isIdCell ? (
-                                            <Link to={`/applications/${row.original.id}/`}>
-                                                {row.original.id}
-                                            </Link>
-                                        ) : (
-                                            cell.render('Cell')
-                                        )}
-                                    </td>
-                                );
-                            })}
+                            {row.cells.map((cell: any) => (
+                                <td
+                                    {...cell.getCellProps()}
+                                    key={cell.column.id}
+                                    style={{ cursor: 'default' }}
+                                >
+                                    {cell.render('Cell')}
+                                </td>
+                            ))}
                         </tr>
                     );
                 })}
-
                 </tbody>
             </table>
         </div>
     );
-}
+};

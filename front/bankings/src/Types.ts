@@ -69,6 +69,16 @@ export type AccountsContextType = {
     setAccounts: React.Dispatch<React.SetStateAction<Account[] | []>>
 }
 
+export type ApplicationsContextType = {
+    applications: Application[],
+    setApplications: React.Dispatch<React.SetStateAction<Application[] | []>>
+}
+
+export const iApplicationsContextState = {
+    applications: [],
+    setApplications: () => {}
+}
+
 export const iAccountsContextState = {
     accounts: [],
     setAccounts: () => {}
