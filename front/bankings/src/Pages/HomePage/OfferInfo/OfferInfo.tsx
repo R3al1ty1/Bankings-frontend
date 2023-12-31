@@ -102,7 +102,7 @@ export const OfferInfo = () => {
             const { data } = await axios('http://127.0.0.1:8000/api/credits/post/', {
                 method: "GET",
                 headers: {
-                    'authorization': `${access_token}`
+                    'Authorization': `${access_token}`
                 },
                 params: {
                     cardName,

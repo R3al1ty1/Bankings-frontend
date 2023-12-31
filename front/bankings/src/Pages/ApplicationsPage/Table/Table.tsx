@@ -16,19 +16,19 @@ interface Application {
     status: number;
     accounts: { name: string }[];
     creation_date: string;
-    // Добавьте другие свойства при необходимости
 }
 
 export const ApplicationsTable = () => {
     const { access_token } = useToken();
     const { is_moderator } = useAuth();
     const [data, setData] = useState<Application[]>([]);
-    const [filteredData, setFilteredData] = useState<Application[]>([]);
+    const [, setFilteredData] = useState<Application[]>([]);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [, setError] = useState<Error | null>(null);
     const [, setIsLoading] = useState(true);
+
 
     const fetchApplicationsData = async () => {
         try {
@@ -52,7 +52,7 @@ export const ApplicationsTable = () => {
 
             const { data } = await axios.get<Application[]>(apiUrl, {
                 headers: {
-                    authorization: `${access_token}`,
+                    Authorization: access_token,
                 },
                 params,
             });
@@ -143,15 +143,15 @@ export const ApplicationsTable = () => {
 
     const tableColumns = useMemo(() => COLUMNS, []);
 
-    const tableInstance = useTable<TableInstance>(
-        {
-            columns: tableColumns,
-            data: filteredData, // Используйте отфильтрованные данные
-            manualPagination: true,
-            pageCount: 1,
-        },
-        usePagination
-    );
+    // const tableInstance = useTable<TableInstance>(
+    //     {
+    //         columns: tableColumns,
+    //         data: filteredData,
+    //         manualPagination: true,
+    //         pageCount: Math.ceil(filteredData.length / 7),
+    //     },
+    //     usePagination
+    // );
 
     const {
         getTableProps,
@@ -159,7 +159,47 @@ export const ApplicationsTable = () => {
         headerGroups,
         page,
         prepareRow,
-    } = tableInstance;
+        canPreviousPage,
+        canNextPage,
+        pageOptions,
+        pageCount,
+        gotoPage,
+        nextPage,
+        previousPage,
+        setPageSize,
+        state: { pageIndex, pageSize },
+    } = useTable<TableInstance>(
+        {
+            columns: tableColumns,
+            data: useMemo(() => {
+                let filteredApplications = data;
+
+                if (startDate) {
+                    filteredApplications = filteredApplications.filter(
+                        (application) => new Date(application.creation_date) >= new Date(startDate)
+                    );
+                }
+
+                if (endDate) {
+                    filteredApplications = filteredApplications.filter(
+                        (application) => new Date(application.creation_date) <= new Date(endDate)
+                    );
+                }
+
+                if (selectedStatus) {
+                    filteredApplications = filteredApplications.filter(
+                        (application) => application.status === parseInt(selectedStatus, 10)
+                    );
+                }
+
+                return filteredApplications;
+            }, [data, startDate, endDate, selectedStatus]),
+            manualPagination: false,
+            pageCount: Math.ceil(data.length / 10),
+        },
+        usePagination
+    );
+
 
     const handleStartDateChange = (date: string) => {
         setStartDate(date);
@@ -226,6 +266,50 @@ export const ApplicationsTable = () => {
                 })}
                 </tbody>
             </table>
+            <div className="pagination">
+                <button className="pagination-button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                    {'<<'}
+                </button>{' '}
+                <button className="pagination-button" onClick={() => previousPage()} disabled={!canPreviousPage}>
+                    {'<'}
+                </button>{' '}
+                <button className="pagination-button" onClick={() => nextPage()} disabled={!canNextPage}>
+                    {'>'}
+                </button>{' '}
+                <button className="pagination-button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                    {'>>'}
+                </button>{' '}
+                <span>
+                Страница{' '}
+                    <strong>
+                    {pageIndex + 1} из {pageOptions.length}
+                </strong>{' '}
+            </span>
+                <span>
+                | Перейти на страницу:{' '}
+                    <input
+                        type="number"
+                        value={pageIndex + 1}
+                        onChange={(e) => {
+                            const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                            gotoPage(page);
+                        }}
+                        style={{ width: '50px' }}
+                    />
+            </span>{' '}
+                <select
+                    value={pageSize}
+                    onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                    }}
+                >
+                    {[5, 10, 15, 20, 50].map((pageSize) => (
+                        <option key={pageSize} value={pageSize}>
+                            Показать {pageSize}
+                        </option>
+                    ))}
+                </select>
+            </div>
         </div>
     );
 };

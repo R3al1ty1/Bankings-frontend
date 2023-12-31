@@ -13,7 +13,7 @@ const UserInfo = () => {
 
     const navigate = useNavigate()
 
-    const {is_moderator, user_name, user_email, logOut} = useAuth()
+    const {is_moderator, full_name, user_email, logOut} = useAuth()
 
     const {resetTokens} = useToken()
 
@@ -32,7 +32,7 @@ const UserInfo = () => {
         logOut()
         resetTokens()
         logOutMessage()
-        navigate("/home")
+        navigate("/agreements")
     }
 
     return (
@@ -42,7 +42,7 @@ const UserInfo = () => {
             </div>
 
             <div className={"user-info-wrapper " + (isOpen ? "open" : "")} ref={modalRef}>
-                <span>Имя: {user_name}</span>
+                <span>Имя: {full_name}</span>
                 <span>Почта: {user_email}</span>
                 <span>Статус: {is_moderator ? "Модератор" : "Пользователь"}</span>
 

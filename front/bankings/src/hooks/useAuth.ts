@@ -5,11 +5,8 @@ import axios from "axios";
 import {useToken} from "./useToken";
 
 export function useAuth() {
-    const userState = useSelector((state: any) => state.user) || {};
-    console.log('User State:', userState);
 
-    const { is_authenticated, is_moderator, user_id, user_name, user_email } = userState;
-    console.log('is_moderator:', is_moderator);
+    const {is_authenticated, is_moderator, user_id, full_name, user_email} = useSelector((state: any) => state.user);
 
     const dispatch = useDispatch()
 
@@ -52,7 +49,7 @@ export function useAuth() {
         is_authenticated,
         is_moderator,
         user_id,
-        user_name,
+        full_name,
         user_email,
         setUser,
         logOut

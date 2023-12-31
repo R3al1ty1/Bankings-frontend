@@ -20,6 +20,8 @@ const Breadcrumbs = () => {
     const topics: Topics = {
         accounts: "Счета",
         draft: "Черновик",
+        applications: "Заявки",
+        agreements: "Договоры",
         home: "Главная",
         profile: "Профиль",
         login: "Вход",
