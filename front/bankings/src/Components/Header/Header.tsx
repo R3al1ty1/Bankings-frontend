@@ -14,7 +14,7 @@ import Hamburger from "../../Components/Header/Hamburger/Hamburger";
 
 const Header: React.FC = () => {
 
-    const {access_token, refresh_token} = useToken()
+    const {access_token} = useToken()
 
     const {is_moderator, is_authenticated, setUser} = useAuth()
 
@@ -70,50 +70,22 @@ const Header: React.FC = () => {
 
         } catch (error: any) {
             if (error.response && error.response.status === 401) {
-                await refreshToken()
+
             }
         }
 
-    }
-
-    const refreshToken = async () => {
-        try {
-
-            console.log("refresh")
-
-            const response: Response = await axios(`http://localhost:8000/api/refresh/`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                    'Authorization': refresh_token
-                },
-            })
-
-            if (response.status == 201)
-            {
-                const permissions = {
-                    is_authenticated: true,
-                    is_moderator: response.data["is_moderator"],
-                    user_id: response.data["user_id"],
-                    user_name: response.data["name"],
-                    user_email: response.data["email"],
-                }
-
-                setUser(permissions)
-            }
-        } catch (e: any) {
-            console.log(e.status);
-        }
     }
 
     useEffect(() => {
+        const fetchData = async () => {
+            if (!is_authenticated) {
+                await auth();
+            }
+        };
 
-        if (!is_authenticated)
-        {
-            auth()
-        }
-
+        fetchData();
     }, []);
+
 
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
@@ -128,6 +100,10 @@ const Header: React.FC = () => {
                 </div>
 
                 <div className="header-links">
+                    <Link to="/agreements" className="header-menu-link" style={{textDecoration: 'none'}}>
+                        <span className="item">Договоры</span>
+                    </Link>
+
                     <Link to="/applications" className="header-menu-link" style={{textDecoration: 'none'}}>
                         <span className="item">Заявки</span>
                     </Link>
@@ -154,12 +130,9 @@ const Header: React.FC = () => {
                 </div>
 
                 <div className="header-links">
-                    <Link to="/home" className="header-menu-link" style={{textDecoration: 'none'}}>
-                        <span className="item">Главная</span>
-                    </Link>
 
-                    <Link to="/home" className="header-menu-link" style={{textDecoration: 'none'}}>
-                        <span className="item">Договора</span>
+                    <Link to="/agreements" className="header-menu-link" style={{textDecoration: 'none'}}>
+                        <span className="item">Договоры</span>
                     </Link>
 
                     <Link to="/applications" className="header-menu-link" style={{textDecoration: 'none'}}>
@@ -185,8 +158,8 @@ const Header: React.FC = () => {
             </div>
 
             <div className="header-links">
-                <Link to="/home" className="header-menu-link" style={{textDecoration: 'none'}}>
-                    <span className="item">Главная</span>
+                <Link to="/agreements" className="header-menu-link" style={{textDecoration: 'none'}}>
+                    <span className="item">Договоры</span>
                 </Link>
             </div>
 

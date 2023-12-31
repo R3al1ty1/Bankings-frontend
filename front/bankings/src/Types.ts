@@ -15,6 +15,14 @@ export interface Account {
     credit?: Credit[],
     card?: Card[]
 }
+
+export interface Agreement {
+    id: number,
+    type: string,
+    user_id_refer: number,
+    description: string,
+    small_desc: string
+}
 export interface Card {
     id: number;
     number: number;
@@ -64,6 +72,11 @@ export interface Application {
     completion_date: string,
 }
 
+export type AgreementsContextType = {
+    agreements: Agreement[],
+    setAgreements: React.Dispatch<React.SetStateAction<Agreement[] | []>>
+}
+
 export type AccountsContextType = {
     accounts: Account[],
     setAccounts: React.Dispatch<React.SetStateAction<Account[] | []>>
@@ -78,6 +91,12 @@ export const iApplicationsContextState = {
     applications: [],
     setApplications: () => {}
 }
+
+export const iAgreementsContextState = {
+    agreements: [],
+    setAgreements: () => {}
+}
+
 
 export const iAccountsContextState = {
     accounts: [],

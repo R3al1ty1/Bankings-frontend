@@ -19,9 +19,14 @@ import OfferPage from "./Pages/HomePage/OfferPage";
 import ApplicationsPage from "./Pages/ApplicationsPage/ApplicationsPage";
 import AccountListPage from "../src/Pages/AccountList/AccountList";
 import {QueryClient, QueryClientProvider } from "react-query";
-import {Account, Application} from "Types";
+import {Account, Application, Agreement} from "Types";
 import {useState} from "react";
 import ApplicationPage from "./Pages/ApplicationPage/ApplicationPage";
+import Agreements from "../src/Pages/AgreementsPage/Agreements/Agreements";
+import AgreementPage from "./Pages/AgreementPage/AgreementPage";
+import AddAgreementPage from "./Pages/AgreementPage/AgreementCreate/AgreementCreate";
+import EditAgreementPage from "./Pages/AgreementPage/AgreementChange/AgreementChange";
+import AddAccountPage from "./Pages/AccountPage/AccountCreate/AccountCreate";
 
 // const PrivateRoute: React.FC<{
 // 	path: string;
@@ -58,6 +63,7 @@ const TopPanelWrapper = () => {
 function App() {
 	const [selectedApplication, setSelectedApplication] = useState<Application | undefined>(undefined);
 	const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(undefined);
+	const [selectedAgreement, setSelectedAgreement] = useState<Agreement | undefined>(undefined);
 	const {is_authenticated} = useAuth()
 	const queryClient = new QueryClient()
 
@@ -82,7 +88,7 @@ function App() {
 
 								<Routes>
 
-									<Route path="/" element={<Navigate to="/home/" replace />} />
+									<Route path="/" element={<Navigate to="/agreements/" replace />} />
 
 
 									<Route path="/auth/" element={<LoginFormLayout />} >
@@ -96,6 +102,22 @@ function App() {
 									</Route>
 
 									<Route path="/home" element={<OfferPage />} />
+
+									<Route path="/agreements" element={<Agreements />} />
+
+									<Route path="/agreements/card" element={<AddAccountPage />} />
+
+									<Route path="/agreements/deposit" element={<AddAccountPage />} />
+
+									<Route path="/agreements/credit" element={<AddAccountPage />} />
+
+									<Route path="/agreements/save" element={<AddAccountPage />} />
+
+									<Route path="/agreements/:id" element={<AgreementPage selectedAgreement={selectedAgreement} setSelectedAgreement={setSelectedAgreement} />} />
+
+									<Route path="/agreements/add" element={<AddAgreementPage />} />
+
+									<Route path="/agreements/edit/:id" element={<EditAgreementPage />} />
 
 									{is_authenticated && <Route path="/applications" element={<ApplicationsPage />} />}
 

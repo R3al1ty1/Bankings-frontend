@@ -16,9 +16,9 @@ import {Response} from "../../../Types";
 
 const ProfileMenu = () => {
 
-    const {access_token, refresh_token} = useToken()
+    const {access_token} = useToken()
 
-    const {is_authenticated, user_name, setUser} = useAuth()
+    const {is_authenticated, full_name, setUser} = useAuth()
 
     const {isDesktopMedium} = useDesktop();
 
@@ -74,44 +74,12 @@ const ProfileMenu = () => {
 
         } catch (error: any) {
             if (error.response && error.response.status === 401) {
-                await refreshToken()
+
             }
         }
 
     }
 
-    const refreshToken = async () => {
-        try {
-
-            console.log("refresh")
-
-            const response: Response = await axios(`http://localhost:8000/api/refresh/`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                    'authorization': `${refresh_token}`
-                },
-            })
-
-            console.log(response.status)
-            console.log(response.data)
-
-            if (response.status == 201)
-            {
-                const permissions = {
-                    is_authenticated: true,
-                    is_moderator: response.data["is_moderator"],
-                    user_id: response.data["user_id"],
-                    user_name: response.data["name"],
-                    user_email: response.data["email"],
-                }
-
-                setUser(permissions)
-            }
-        } catch (e: any) {
-            console.log(e.status);
-        }
-    }
 
     useEffect(() => {
 
@@ -133,7 +101,7 @@ const ProfileMenu = () => {
 
                     { !isDesktopMedium &&
                         <Link to="/profile" className="sub-menu-link" style={{ textDecoration: 'none' }} onClick={() => setIsOpen(false)}>
-                            <span className="item">{user_name}</span>
+                            <span className="item">{full_name}</span>
                         </Link>
                     }
 

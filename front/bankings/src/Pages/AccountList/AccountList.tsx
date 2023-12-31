@@ -62,19 +62,16 @@ const AccountList = () => {
                         }}/>
                     </div>
                     <div className={"bottom"}>
-                        {/* Дополнительные фильтры или элементы управления */}
                     </div>
                 </div>
                 <div className="bottom">
                     <div className="account-list-wrapper">
                         <div className="top-wrapper">
-                            {/* Верхняя часть списка счетов */}
                         </div>
                         <div className="center-wrapper">
                             <SearchResultsList />
                         </div>
                         <div className="bottom-wrapper">
-                            {/* Нижняя часть списка счетов */}
                         </div>
                     </div>
                 </div>

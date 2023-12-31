@@ -31,7 +31,7 @@ export function useApplicationForm() {
 
         const response = await axios.put(`http://localhost:8000/api/app_mod_status/${application_id}/put/`, { status: 3 }, {
             headers: {
-                'authorization': access_token
+                'Authorization': access_token
             }
         });
 

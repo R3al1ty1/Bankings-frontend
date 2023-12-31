@@ -7,13 +7,12 @@ import axios from "axios";
 import {errorMessage} from "../../../Toasts/Toasts";
 import {useToken} from "../../../hooks/useToken";
 import {useAuth} from "../../../hooks/useAuth";
-//import GeneralButton from "../../../Components/GeneralButton/GeneralButton";
 
 const SignIn = () => {
 
     const navigate = useNavigate()
 
-    const { setAccessToken, setRefreshToken } = useToken()
+    const { setAccessToken} = useToken()
     const { setUser } = useAuth()
 
     const login = async (formData: any) => {
@@ -27,11 +26,7 @@ const SignIn = () => {
                 data: formData as FormData
             })
 
-            console.log(response.data.headers)
-            console.log(response.headers['set-cookies'])
-
             setAccessToken(response.data['access_token'])
-            setRefreshToken(response.data['refresh_token'])
 
             const permissions = {
                 is_authenticated: true,
@@ -42,6 +37,9 @@ const SignIn = () => {
             }
 
             setUser(permissions)
+            localStorage.setItem('userToken', response.data["access_token"])
+            localStorage.setItem('userRole', response.data["is_moderator"])
+            localStorage.setItem("requestStatus", '')
 
             navigate("/accounts/");
 

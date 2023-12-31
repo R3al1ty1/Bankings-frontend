@@ -513,7 +513,9 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
                             </button>
                         </form>
                         <div className="buttons-info">
-                            <button className="account-delete-button-info" onClick={onDelete}>Заморозить</button>
+                            <button className="account-delete-button-info" onClick={onDelete}>
+                                {selectedAccount.available ? "Заморозить" : "Разморозить"}
+                            </button>
                             <div className="home-button">
                                 <Link to={`/accounts`}>
                                     <button className="account-back-button">Вернуться к счетам</button>
