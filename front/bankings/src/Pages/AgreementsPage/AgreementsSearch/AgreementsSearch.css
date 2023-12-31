@@ -1,0 +1,65 @@
+.agreement {
+    display: flex;
+    align-items: center;
+    background-color: #2c2c2c;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+.agreement-image {
+    width: 50px;
+    height: 50px;
+}
+
+.agreement:hover {
+    background-color: #282c34;
+}
+
+.left-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 10px;
+    margin-left: 15px;
+}
+
+.agreement-name {
+    font-weight: bold;
+    color: #999;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.agreement-type {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.right-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.agreement-info-button,
+.agreement-delete-button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    background-color: #61dafb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.agreement-info-button:hover,
+.agreement-delete-button:hover {
+    background-color: #000;
+}
