@@ -9,8 +9,6 @@ const ApplicationConstructor = () => {
     useEffect(() => {
         fetchDraftApplication();
     }, []);
-
-    // Предположим, что у вас есть appId в application, если нет - установите значение по умолчанию
     const id = application?.id || 0;
 
     if (id === 0) {
