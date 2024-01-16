@@ -13,7 +13,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ApplicationConstructor from "../src/Components/ApplicationConstructor/ApplicationConstructor";
 import {useAuth} from "./hooks/useAuth";
-import DraftApplicationPage from "./Pages/DraftApplicationPage/DraftApplicationPage";
+// import DraftApplicationPage from "./Pages/DraftApplicationPage/DraftApplicationPage";
 import OfferPage from "./Pages/HomePage/OfferPage";
 //import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import ApplicationsPage from "./Pages/ApplicationsPage/ApplicationsPage";
@@ -27,6 +27,7 @@ import AgreementPage from "./Pages/AgreementPage/AgreementPage";
 import AddAgreementPage from "./Pages/AgreementPage/AgreementCreate/AgreementCreate";
 import EditAgreementPage from "./Pages/AgreementPage/AgreementChange/AgreementChange";
 import AddAccountPage from "./Pages/AccountPage/AccountCreate/AccountCreate";
+import EmptyPage from "./Pages/ApplicationPage/EmptyPage";
 
 // const PrivateRoute: React.FC<{
 // 	path: string;
@@ -47,13 +48,13 @@ const LoginFormLayout = () => {
 }
 
 const TopPanelWrapper = () => {
-	const {is_authenticated, is_moderator} = useAuth()
+	const {is_authenticated} = useAuth()
 	const location = useLocation()
 
 	return (
 		<div className="top-panels-wrapper">
 			{is_authenticated && <Breadcrumbs />}
-			{is_authenticated && !is_moderator && location.pathname.includes("accounts") && <ApplicationConstructor /> }
+			{is_authenticated && location.pathname.includes("agreements") && <ApplicationConstructor /> }
 		</div>
 	)
 }
@@ -123,7 +124,7 @@ function App() {
 
 									{is_authenticated && <Route path="/applications/:id" element={<ApplicationPage selectedApplication={selectedApplication} setSelectedApplication={setSelectedApplication}/>} />}
 
-									{is_authenticated && <Route path="/applications/draft" element={<DraftApplicationPage />} />}
+									{is_authenticated && <Route path="/applications/empty" element={<EmptyPage />} />}
 
 									{is_authenticated && <Route path="/accounts/" element={<AccountListPage />} />}
 

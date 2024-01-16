@@ -4,19 +4,24 @@ import { TableInstance, useTable, usePagination } from 'react-table';
 import React, { useMemo, useState, useEffect } from 'react';
 import './Table.css';
 import axios from 'axios';
-import { STATUSES } from '../../../Consts';
+import {STATUSES} from '../../../Consts';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { useToken } from '../../../hooks/useToken';
 import { useAuth } from '../../../hooks/useAuth';
+import {useApplicationForm} from "../../../hooks/useApplicationForm";
+// import {Response} from "Types";
 
 interface Application {
     id: number;
     status: number;
     accounts: { name: string }[];
     creation_date: string;
+    number: number | null;
+    user_email: string;
 }
+
 
 export const ApplicationsTable = () => {
     const { access_token } = useToken();
@@ -28,42 +33,57 @@ export const ApplicationsTable = () => {
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [, setError] = useState<Error | null>(null);
     const [, setIsLoading] = useState(true);
-
+    const [currentPage, setCurrentPage] = useState(0);
+    const [userEmailFilter, setUserEmailFilter] = useState<string | null>(null);
+    const {acceptApplication, dismissApplication} = useApplicationForm()
 
     const fetchApplicationsData = async () => {
         try {
-            const apiUrl = is_moderator
+            const appsUrl = is_moderator
                 ? 'http://127.0.0.1:8000/api/applications/mod'
                 : 'http://127.0.0.1:8000/api/applications/';
 
-            const params: Record<string, any> = {};
-
-            if (startDate) {
-                params.start_date = startDate;
-            }
-
-            if (endDate) {
-                params.end_date = endDate;
-            }
-
-            if (selectedStatus) {
-                params.status = selectedStatus;
-            }
-
-            const { data } = await axios.get<Application[]>(apiUrl, {
+            const { data: applications } = await axios.get<Application[]>(appsUrl, {
                 headers: {
                     Authorization: access_token,
                 },
-                params,
+                params: {
+                    start_date: startDate,
+                    end_date: endDate,
+                    status: selectedStatus,
+                    user_email: is_moderator ? userEmailFilter : undefined,
+                },
             });
 
-            setData(data);
+            const promises = applications.map(async (app) => {
+                const numberUrl = `http://127.0.0.1:8000/api/apps/accs/${app.id}/get/`;
+                const { data: numberData } = await axios.get<{ number: number | null }[]>(numberUrl, {
+                    headers: {
+                        Authorization: access_token,
+                    },
+                });
+
+                const numbers = numberData.map((item) => item.number);
+
+                const filteredNumbers = numbers.filter((number) => number !== null).flat();
+
+                const finalNumbers = filteredNumbers.length > 0 ? filteredNumbers : ['Нет номеров счетов'];
+
+                return { ...app, numbers: finalNumbers };
+            });
+
+            const updatedApplications = await Promise.all(promises);
+
+            console.log("Updated Applications:", updatedApplications);
+
+            setData(updatedApplications);
         } catch (error) {
             setError(error as Error);
         } finally {
             setIsLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchApplicationsData();
@@ -78,7 +98,6 @@ export const ApplicationsTable = () => {
     }, [access_token, is_moderator, startDate, endDate, selectedStatus]);
 
     useEffect(() => {
-        // Фильтрация данных при изменении фильтров
         let filteredApplications = data;
 
         if (startDate) {
@@ -99,8 +118,52 @@ export const ApplicationsTable = () => {
             );
         }
 
+        if (userEmailFilter) {
+            filteredApplications = filteredApplications.filter(
+                (application) => application.user_email.includes(userEmailFilter)
+            );
+        }
+
         setFilteredData(filteredApplications);
-    }, [data, startDate, endDate, selectedStatus]);
+    }, [data, startDate, endDate, selectedStatus, userEmailFilter]);
+
+    const ACTIONS_COLUMN = {
+        Header: 'Действия',
+        accessor: 'actions',
+        Cell: ({ row }: { row: any }) => (
+            is_moderator && row.original.status === 2 && (
+                <div className="buttons-container">
+                    <Link to={`/applications/`}>
+                        <button className="accept-button" onClick={() => handleAcceptClick(row.original)}>
+                            Принять
+                        </button>
+                    </Link>
+                    <Link to={`/applications/`}>
+                        <button className="dismiss-button" onClick={() => handleDismissClick(row.original)}>
+                            Отклонить
+                        </button>
+                    </Link>
+                </div>
+            )
+        ),
+    };
+
+// ...
+
+    const handleAcceptClick = async (application: Application) => {
+        if (application.status === 2) {
+            acceptApplication(application.id);
+        }
+    };
+
+    const handleDismissClick = async (application: Application) => {
+        if (application.status === 2) {
+            dismissApplication(application.id);
+        }
+
+    };
+
+
 
     const COLUMNS = [
         {
@@ -110,6 +173,15 @@ export const ApplicationsTable = () => {
                 <Link to={`/applications/${row.original.id}`}>{value}</Link>
             ),
         },
+        ...(is_moderator
+            ? [
+                {
+                    Header: 'Почта',
+                    accessor: 'user_email',
+                    Cell: ({ value }: { value?: string }) => value || 'Нет почты',
+                },
+            ]
+            : []),
         {
             Header: 'Статус',
             accessor: 'status',
@@ -139,6 +211,18 @@ export const ApplicationsTable = () => {
                 return 'Нет даты';
             },
         },
+        {
+            Header: 'Номера счетов',
+            accessor: 'numbers',
+            Cell: ({ value }: { value?: number[] }) => {
+                if (value) {
+                    return value.join(', ');
+                }
+                return 'Нет номеров счетов';
+            },
+        },
+        ACTIONS_COLUMN,
+
     ];
 
     const tableColumns = useMemo(() => COLUMNS, []);
@@ -174,6 +258,7 @@ export const ApplicationsTable = () => {
             data: useMemo(() => {
                 let filteredApplications = data;
 
+                // Фильтрация данных
                 if (startDate) {
                     filteredApplications = filteredApplications.filter(
                         (application) => new Date(application.creation_date) >= new Date(startDate)
@@ -192,13 +277,24 @@ export const ApplicationsTable = () => {
                     );
                 }
 
+                if (userEmailFilter) {
+                    filteredApplications = filteredApplications.filter(
+                        (application) => application.user_email.includes(userEmailFilter)
+                    );
+                }
+
                 return filteredApplications;
-            }, [data, startDate, endDate, selectedStatus]),
+            }, [data, startDate, endDate, selectedStatus, userEmailFilter]),
             manualPagination: false,
             pageCount: Math.ceil(data.length / 10),
+            initialState: { pageIndex: currentPage },
         },
         usePagination
     );
+
+    useEffect(() => {
+        setCurrentPage(pageIndex);
+    }, [pageIndex]);
 
 
     const handleStartDateChange = (date: string) => {
@@ -235,6 +331,16 @@ export const ApplicationsTable = () => {
                         ))}
                     </select>
                 </label>
+                <label>
+                    Почта:
+                    <input
+                        className="user-email"
+                        type="text"
+                        placeholder="Введите почту"
+                        onChange={(e) => setUserEmailFilter(e.target.value)}
+                    />
+                </label>
+
             </div>
 
             <table {...getTableProps()} className="orders-table">
@@ -260,6 +366,7 @@ export const ApplicationsTable = () => {
                                 >
                                     {cell.render('Cell')}
                                 </td>
+
                             ))}
                         </tr>
                     );

@@ -2,13 +2,16 @@ import "./ApplicationInfo.css"
 import {Dispatch, useEffect} from "react";
 import {Application} from "../../../Types";
 import {requestTime, STATUSES} from "../../../Consts";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../../hooks/useAuth";
 import {useApplicationForm} from "../../../hooks/useApplicationForm";
+import {useDraftApplication} from "../../../hooks/useDraftApplication";
 
 const ApplicationInfo = ({ application_id, selectedApplication, setSelectedApplication }:{ application_id:number | undefined, selectedApplication:Application| undefined, setSelectedApplication:Dispatch<Application | undefined> }) => {
     const {is_moderator} = useAuth()
     const {acceptApplication, dismissApplication} = useApplicationForm()
+    const {sendApplication, deleteApplication} = useDraftApplication()
+    const navigate = useNavigate()
 
     const getStatusName = (statusId: number | undefined): string => {
         const foundStatus = STATUSES.find((status) => status.id === statusId);
@@ -20,6 +23,16 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
             acceptApplication(selectedApplication.id);
         }
     };
+
+    const handleAdd = async () => {
+        await sendApplication()
+        navigate("/applications")
+    }
+
+    const handleDelete = async () => {
+        await deleteApplication()
+        navigate("/accounts")
+    }
 
     const handleDismissClick = () => {
         if (selectedApplication) {
@@ -99,6 +112,15 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
                                         <button className="application-back-button">Вернуться к заявкам</button>
                                     </Link>
                                 </div>
+                                {selectedApplication.status == 1 &&
+                                    <div className="buttons-container">
+
+                                            <button className="draft-button" onClick={handleAdd}>Отправить</button>
+
+                                            <button className="draft-button" onClick={handleDelete}>Удалить</button>
+
+                                    </div>
+                                }
                                     {is_moderator && selectedApplication.status == 2 &&
                                         <div className="buttons-container">
                                             <Link to={`/applications/`}>

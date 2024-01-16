@@ -44,7 +44,7 @@ export function useDraftApplication() {
             const response = await axios(`http://127.0.0.1:8000/api/accounts/${account_id}/post/`, {
                 method: "POST",
                 headers: {
-                    'authorization': access_token
+                    'Authorization': access_token
                 },
             })
 
@@ -60,7 +60,7 @@ export function useDraftApplication() {
                     method: "PUT",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
-                        'authorization': access_token
+                        'Authorization': access_token
                     },
                     data: application
                 })
@@ -78,7 +78,7 @@ export function useDraftApplication() {
                 },
                 {
                     headers: {
-                        'authorization': access_token,
+                        'Authorization': access_token,
                     },
 
                 })
@@ -93,7 +93,7 @@ export function useDraftApplication() {
             const response = await axios(`http://127.0.0.1:8000/api/applications/${application.id}/delete/`, {
                 method: "DELETE",
                 headers: {
-                    'authorization': access_token
+                    'Authorization': access_token
                 }
             })
 
@@ -106,7 +106,7 @@ export function useDraftApplication() {
             const response = await axios(`http://127.0.0.1:8000/api/apps_accs/${account_id}/${application.id}/delete/`, {
                 method: "DELETE",
                 headers: {
-                    'authorization': access_token
+                    'Authorization': access_token
                 }
             })
 

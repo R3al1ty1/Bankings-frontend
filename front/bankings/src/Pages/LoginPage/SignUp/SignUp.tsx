@@ -3,7 +3,7 @@ import {FaLock, FaUser} from "react-icons/fa6";
 import {GrMail} from "react-icons/gr";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import {errorMessage, successMessage} from "../../../Toasts/Toasts";
+import {errorMessage} from "../../../Toasts/Toasts";
 import {useToken} from "../../../hooks/useToken";
 import {useAuth} from "../../../hooks/useAuth";
 import {Response} from "../../../Types";
@@ -43,8 +43,6 @@ const SignUp = () => {
             setUser(permissions)
 
             navigate("/accounts");
-
-            successMessage(response.data["full_name"])
 
         } catch {
             errorMessage()

@@ -105,3 +105,17 @@
 .dismiss-button:hover {
     background: #1a1a1a;
 }
+
+.draft-button {
+    background: #2e2e2e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #61dafb;
+}
+.draft-button:hover {
+    background: #1a1a1a;
+}

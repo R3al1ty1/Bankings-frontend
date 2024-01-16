@@ -16,7 +16,7 @@ const Header: React.FC = () => {
 
     const {access_token} = useToken()
 
-    const {is_moderator, is_authenticated, setUser} = useAuth()
+    const {is_moderator, user_email, is_authenticated, setUser} = useAuth()
 
     const {setApplication} = useDraftApplication()
 
@@ -112,7 +112,7 @@ const Header: React.FC = () => {
                         <span className="item">Счета</span>
                     </Link>
                 </div>
-
+                <div className="email-out">{user_email}</div>
                 <ProfileMenu/>
             </div>
         );
@@ -143,7 +143,7 @@ const Header: React.FC = () => {
                         <span className="item">Счета</span>
                     </Link>
                 </div>
-
+                <div className="email-out">{user_email}</div>
                 <ProfileMenu/>
             </div>
         );
@@ -158,6 +158,10 @@ const Header: React.FC = () => {
             </div>
 
             <div className="header-links">
+                <Link to="/home" className="header-menu-link" style={{textDecoration: 'none'}}>
+                    <span className="item">Меню</span>
+                </Link>
+
                 <Link to="/agreements" className="header-menu-link" style={{textDecoration: 'none'}}>
                     <span className="item">Договоры</span>
                 </Link>
