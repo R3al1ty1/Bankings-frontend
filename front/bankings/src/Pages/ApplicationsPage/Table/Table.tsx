@@ -11,7 +11,6 @@ import ruLocale from 'date-fns/locale/ru';
 import { useToken } from '../../../hooks/useToken';
 import { useAuth } from '../../../hooks/useAuth';
 import {useApplicationForm} from "../../../hooks/useApplicationForm";
-// import {Response} from "Types";
 
 interface Application {
     id: number;
@@ -148,8 +147,6 @@ export const ApplicationsTable = () => {
         ),
     };
 
-// ...
-
     const handleAcceptClick = async (application: Application) => {
         if (application.status === 2) {
             acceptApplication(application.id);
@@ -162,8 +159,6 @@ export const ApplicationsTable = () => {
         }
 
     };
-
-
 
     const COLUMNS = [
         {
@@ -221,21 +216,15 @@ export const ApplicationsTable = () => {
                 return 'Нет номеров счетов';
             },
         },
-        ACTIONS_COLUMN,
+        ...(is_moderator
+            ? [
+                ACTIONS_COLUMN
+            ]
+            : []),
 
     ];
 
     const tableColumns = useMemo(() => COLUMNS, []);
-
-    // const tableInstance = useTable<TableInstance>(
-    //     {
-    //         columns: tableColumns,
-    //         data: filteredData,
-    //         manualPagination: true,
-    //         pageCount: Math.ceil(filteredData.length / 7),
-    //     },
-    //     usePagination
-    // );
 
     const {
         getTableProps,

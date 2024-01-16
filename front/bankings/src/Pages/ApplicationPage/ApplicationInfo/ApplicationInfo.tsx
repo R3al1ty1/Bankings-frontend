@@ -6,11 +6,13 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../../hooks/useAuth";
 import {useApplicationForm} from "../../../hooks/useApplicationForm";
 import {useDraftApplication} from "../../../hooks/useDraftApplication";
+import {useToken} from "../../../hooks/useToken";
 
 const ApplicationInfo = ({ application_id, selectedApplication, setSelectedApplication }:{ application_id:number | undefined, selectedApplication:Application| undefined, setSelectedApplication:Dispatch<Application | undefined> }) => {
     const {is_moderator} = useAuth()
     const {acceptApplication, dismissApplication} = useApplicationForm()
     const {sendApplication, deleteApplication} = useDraftApplication()
+    const { access_token} = useToken();
     const navigate = useNavigate()
 
     const getStatusName = (statusId: number | undefined): string => {
@@ -39,6 +41,29 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
             dismissApplication(selectedApplication.id);
         }
     };
+
+    const handleDeleteAppAcc = async (accId: number, appId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/apps_accs/${accId}/${appId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Authorization': access_token
+                },
+            });
+
+            if (!response.ok) {
+                console.error('Error:', response.statusText);
+            } else {
+                console.log('Successfully deleted');
+                fetchData();
+            }
+        } catch (error: any) {
+            console.error('Error:', error.message);
+        }
+    };
+
+
     const fetchData = async () => {
 
         try {
@@ -102,6 +127,15 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
                                         <td>{account.type}</td>
                                         <td>{account.name}</td>
                                         <td>{account.number}</td>
+                                        {selectedApplication.status === 1 &&
+                                            <td>
+                                                <button
+                                                    className="draft-button"
+                                                    onClick={() => handleDeleteAppAcc(account.id, selectedApplication.id)}>
+                                                    Удалить
+                                                </button>
+                                            </td>
+                                        }
                                     </tr>
                                 ))}
                                 </tbody>
