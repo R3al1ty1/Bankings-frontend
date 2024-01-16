@@ -29,7 +29,7 @@ const SearchResult = ({ account }: { account: Account }) => {
             method: "PUT",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                'authorization': access_token
+                'Authorization': access_token
             },
         })
             .then((response) => {

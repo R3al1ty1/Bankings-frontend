@@ -53,12 +53,15 @@ export const Agreements = () => {
     if (is_moderator) {
         return (
             <div className="accounts-wrapper">
+                <div className="button-container">
                 <Link to="/agreements/add">
                     <button className="add-agreement-button">Добавить договор</button>
                 </Link>
+                </div>
                 <div className="bottom">
                     <div className="account-list-wrapper">
                         <div className="top-wrapper">
+                            <AgreementsOpen />
                                 <SearchBar fetchData={(query) => {
                                     setQuery(query);
                                 }}/>

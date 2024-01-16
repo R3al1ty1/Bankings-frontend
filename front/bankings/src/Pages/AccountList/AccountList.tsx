@@ -12,8 +12,6 @@ import {useAuth} from "../../hooks/useAuth";
 
 export const AccountsContext = React.createContext<AccountsContextType>(iAccountsContextState)
 
-// ... (ваш импорт и код)
-
 const AccountList = () => {
     const { access_token} = useToken();
     const {is_moderator} = useAuth()

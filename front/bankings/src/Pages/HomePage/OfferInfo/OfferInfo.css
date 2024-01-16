@@ -61,3 +61,15 @@
 .menu div:hover, .menu div.active {
     background: #2e2e2e;
 }
+
+.home-link {
+    margin-bottom: 15px;
+}
+
+.link-text {
+    color: #bbbbbb;
+}
+
+.link-text:hover {
+    background: #2e2e2e;
+}

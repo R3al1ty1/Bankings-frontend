@@ -2,7 +2,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setOpen} from "../store/applicationFormSlice";
 import {useToken} from "../hooks/useToken";
 import axios from "axios";
-import {successMessage} from "../Toasts/Toasts";
 import {updateApplication} from "../store/selectedApplicationSlice";
 
 export function useApplicationForm() {
@@ -37,7 +36,6 @@ export function useApplicationForm() {
 
         if (response.status == 200) {
             setApplication(response.data)
-            successMessage(`Счет №${application_id} одобрен`)
         }
     }
 
@@ -57,7 +55,6 @@ export function useApplicationForm() {
 
         if (response.status == 200) {
             setApplication(response.data)
-            successMessage(`Счет №${application_id} отклонен`)
         }
     }
 

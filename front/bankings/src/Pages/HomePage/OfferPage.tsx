@@ -1,9 +1,9 @@
-import {OfferInfo} from "./OfferInfo/OfferInfo";
+import {HomeInfo} from "./OfferInfo/OfferInfo";
 
 const OfferPage = () => {
     return (
         <div>
-            <OfferInfo />
+            <HomeInfo />
         </div>
     )
 };
