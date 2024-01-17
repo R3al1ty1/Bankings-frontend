@@ -1,0 +1,83 @@
+.dropdown {
+    position: relative;
+
+@media screen and (max-width: 420px) {
+    width: 100%;
+}
+
+&.show {
+.menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    z-index: 1000;
+}
+
+.select {
+.caret {
+    transform: rotate(180deg);
+}
+}
+}
+
+.select {
+    width: 200px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    padding: 15px;
+    transition: background 0.3s ease;
+    background: #1e1e1e;
+    cursor: pointer;
+
+@media screen and (max-width: 420px) {
+    width: 100%;
+}
+
+.caret {
+    transition: all 0.3s ease;
+}
+
+&.select-clicked {
+     border: 2px #26489a solid;
+     box-shadow: 0 0 0.8em #26489a;
+     transition: background 0.3s ease;
+ }
+}
+
+.menu {
+    list-style: none;
+    padding: 4px 8px;
+    background: #2e2e2e;
+    border: 1px #444444 solid;
+    border-radius: 10px;
+    color: #bbbbbb;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+
+div {
+    padding: 15px 10px;
+    margin: 5px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+    cursor: pointer;
+
+&:hover {
+     background: #000000;
+ }
+
+&.active {
+     background: #000000;
+ }
+}
+}
+}

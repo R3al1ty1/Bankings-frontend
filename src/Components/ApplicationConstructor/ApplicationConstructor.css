@@ -1,0 +1,45 @@
+.application-constructor-container {
+    border-radius: 15px;
+    box-shadow: 0 4px 30px -10px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s ease;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    background: #2c2c2c;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+.application-constructor-container:hover {
+    background-color: #000000;
+}
+
+.application-constructor-container span {
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.application-constructor-container .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 14px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+    color: #2c2c2c;
+}
+
+.order-page-wrapper {
+    color: #fff;
+}

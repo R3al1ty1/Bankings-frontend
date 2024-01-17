@@ -1,0 +1,77 @@
+.agreements-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.filters-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+h3 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.filters-container input {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.filters-container button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3f51b5;
+    color: #ffffff;
+    cursor: pointer;
+}
+.bottom {
+}
+
+.agreement-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.my-agreements {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-agreement-button {
+    background: #61dafb;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.add-agreement-button:hover {
+    background: #1a1a1a;
+}
+

@@ -1,0 +1,101 @@
+.add-account-wrapper {
+    background: #2c2c2c;
+    padding: 20px;
+    color: #ffffff;
+    border-radius: 10px;
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.header-name {
+    margin-bottom: 10px;
+}
+
+.add-account-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.card label {
+    display: block;
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.card input,
+.card textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    width: 100%; /* Поля для ввода теперь одинаковой ширины */
+    box-sizing: border-box;
+}
+
+.card textarea {
+    resize: vertical;
+}
+
+.add-account-button {
+    background: #61dafb;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.add-account-button:hover {
+    background: #1a1a1a;
+}
+
+
+.dropdown {
+    margin-bottom: 15px;
+}
+
+.menu {
+    left: 0;
+}
+
+.select {
+    background: #2e2e2e;
+    width: 100%;
+}
+
+.menu div {
+    color: #bbbbbb;
+}
+
+.menu div:hover, .menu div.active {
+    background: #2e2e2e;
+}
+
+.send-button {
+    padding: 8px 15px;
+    cursor: pointer;
+    background-color: #61dafb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    width: 200px;
+}
+
+.send-button:hover {
+    background-color: #000;
+}

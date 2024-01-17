@@ -1,0 +1,105 @@
+/* Добавленные стили */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: #2e2e2e;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.filters label {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    margin-right: 20px;
+}
+
+.filters input,
+.filters select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.filters button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background-color: #45a049;
+}
+
+/* Существующие стили */
+.table-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background: #2e2e2e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    width: 1250px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table thead tr {
+    background: #2e2e2e;
+}
+
+.orders-table th {
+    padding: 20px;
+    user-select: none;
+    gap: 10px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.orders-table tbody tr {
+    transition: 0.2s ease;
+    color: #cccccc;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #111111;
+}
+
+.orders-table tbody td {
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.pagination {
+    color: #ffffff;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.pagination-button {
+    background: #2e2e2e;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #61dafb;
+}
+
+.pagination-button:hover {
+    background: #1a1a1a;
+}
