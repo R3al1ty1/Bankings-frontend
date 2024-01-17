@@ -113,7 +113,6 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
                         <span>Валюта: {selectedAccount.currency}</span>
                         <span>Тип счета: {selectedAccount.type}</span>
                         <div className="buttons-info">
-                            <button className="account-delete-button-info" onClick={onDelete}>Заморозить</button>
                             <div className="home-button">
                                 <Link to={`/accounts`}>
                                     <button className="account-back-button">Вернуться к счетам</button>
@@ -137,7 +136,6 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
                     <span>Валюта: {selectedAccount.currency}</span>
                     <span>Тип счета: {selectedAccount.type}</span>
                     <div className="buttons-info">
-                        <button className="account-delete-button-info" onClick={onDelete}>Заморозить</button>
                         <div className="home-button">
                             <Link to={`/accounts`}>
                                 <button className="account-back-button">Вернуться к счетам</button>

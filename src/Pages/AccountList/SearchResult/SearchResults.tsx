@@ -9,6 +9,7 @@ import {useToken} from "../../../hooks/useToken";
 import cardImage from "../../AccountPage/AccountInfo/card.png";
 // @ts-ignore
 import saveImage from "../../AccountPage/AccountInfo/save.png"
+import {DOMEN, iAccountsMock, requestTime} from "../../../Consts";
 
 const SearchResult = ({ account }: { account: Account }) => {
     const {access_token} = useToken()
@@ -29,29 +30,40 @@ const SearchResult = ({ account }: { account: Account }) => {
     function formatCurrency(amount: number) {
         return amount.toLocaleString('en-US');
     }
-    const onDelete = () => {
-        fetch(`http://127.0.0.1:8000/api/accounts/${account.id}/delete/`, {
-            method: "PUT",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                'Authorization': access_token
-            },
-        })
-            .then((response) => {
-                if (response.ok){
-                    return response.json()
-                }
+    const onDelete = async () => {
 
-                throw new Error('Something went wrong');
-            })
-            .then((results) => {
-                setAccounts(results)
-            })
-            .catch((error) => {
-                console.log(error)
+        try {
+            const response = await fetch(`${DOMEN}/api/accounts/${account.id}/delete/`, {
+                method: "DELETE",
+                signal: AbortSignal.timeout(requestTime),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Authorization': access_token
+                },
             });
+
+            if (!response.ok){
+                deleteMockAccount()
+            }
+
+            const accounts: Account[] = await response.json()
+
+            setAccounts(accounts)
+
+        } catch (e) {
+
+            deleteMockAccount()
+
+        }
     }
 
+    const deleteMockAccount = () => {
+
+        account.available = false
+
+        setAccounts(iAccountsMock.filter(account => account.available == true))
+
+    }
     if (account.type === "Карта") {
         const icon = `http://127.0.0.1:8000/api/icon/Карта/`;
         return (
