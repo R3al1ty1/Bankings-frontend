@@ -42,7 +42,8 @@ const AccountList = () => {
             }
 
         } catch (e) {
-            // Обработка ошибок
+            // const mockAccounts = iAccountsMock;
+            // setAccounts([mockAccounts]);
         }
     };
 

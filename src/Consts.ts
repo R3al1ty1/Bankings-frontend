@@ -5,7 +5,7 @@ export const requestTime = 1000
 export const iAccountMock = {
     
         id: 1,
-        type: "card",
+        type: "Карта",
         name: "INK No Limits",
         amount: "400",
         number: 23213213,
@@ -19,7 +19,7 @@ export const iAccountMock = {
 export const iAccountsMock = [
     {
         id: 1,
-        type: "card",
+        type: "Карта",
         name: "INK No Limits",
         amount: "100",
         number: 23213213,
@@ -30,20 +30,9 @@ export const iAccountsMock = [
     },
     {
         id: 2,
-        type: "card",
+        type: "Карта",
         name: "INK No Limits",
         amount: "200",
-        number: 23213213,
-        currency: 810,
-        bic: 2018321,
-        icon: "icon",
-        available: true
-    },
-    {
-        id: 3,
-        type: "card",
-        name: "INK No Limits",
-        amount: "300",
         number: 23213213,
         currency: 810,
         bic: 2018321,
@@ -60,29 +49,7 @@ export const iAccountsMock = [
         bic: 2018321,
         icon: "icon",
         available: true
-    },
-    {
-        id: 5,
-        type: "card",
-        name: "INK No Limits",
-        amount: "500",
-        number: 23213213,
-        currency: 810,
-        bic: 2018321,
-        icon: "icon",
-        available: true
-    },
-    {
-        id: 6,
-        type: "card",
-        name: "INK No Limits",
-        amount: "600",
-        number: 23213213,
-        currency: 810,
-        bic: 2018321,
-        icon: "icon",
-        available: true
-    },
+    }
 ]
 
 interface Option {

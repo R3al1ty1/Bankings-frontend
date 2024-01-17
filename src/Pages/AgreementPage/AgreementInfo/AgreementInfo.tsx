@@ -1,34 +1,53 @@
-import { useEffect } from 'react';
+// @ts-ignore
+import React, { useEffect } from 'react';
 import { Dispatch } from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Agreement } from '../../../Types';
-import {useAuth} from "../../../hooks/useAuth";
-import "./AgreementInfo.css"
+import { useAuth } from '../../../hooks/useAuth';
+import './AgreementInfo.css';
+// @ts-ignore
+import agrImage from "../../AgreementsPage/AgreementsOpen/AgreementsOpenInfo/agreement.png";
 
+const AgreementInfo = ({
+                           agreement_id,
+                           agreement_type,
+                           user_id_refer,
+                           selectedAgreement,
+                           setSelectedAgreement,
+                       }: {
+    agreement_id: number | undefined;
+    agreement_type: string;
+    user_id_refer: number | undefined;
+    selectedAgreement: Agreement | undefined;
+    setSelectedAgreement: Dispatch<Agreement | undefined>;
+}) => {
+    const { is_moderator, is_authenticated } = useAuth();
 
-const AgreementInfo = ({ agreement_id, agreement_type, user_id_refer, selectedAgreement}: { agreement_id: number | undefined, agreement_type: string, user_id_refer: number | undefined, selectedAgreement: Agreement | undefined, setSelectedAgreement: Dispatch<Agreement | undefined> }) => {
-    const {is_moderator, is_authenticated} = useAuth()
     const fetchData = async () => {
         try {
-            const response1 = await fetch(`http://127.0.0.1:8000/api/agreements/${agreement_id}/`, {
-                method: "GET",
+            const response = await fetch(`http://127.0.0.1:8000/api/agreements/${agreement_id}/`, {
+                method: 'GET',
             });
 
-            if (!response1.ok) {
+            if (response.ok) {
+                const data = await response.json();
+                setSelectedAgreement(data);
+            } else {
+                // Если получен неудачный ответ, используйте моки
+                setSelectedAgreement(mockAgreements.find((agreement) => agreement.id === agreement_id));
             }
-
-            
-        } catch (e) {
+        } catch (error) {
+            // Если произошла ошибка, также используйте моки
+            setSelectedAgreement(mockAgreements.find((agreement) => agreement.id === agreement_id));
         }
     };
 
     const agrTypeDictionary: Record<string, string> = {
-        'Карта': 'card',
+        Карта: 'card',
         'Кредитный счет': 'credit',
-        'Вклад': 'deposit',
+        Вклад: 'deposit',
         'Сберегательный счет': 'save',
     };
-
 
     const icon = `http://127.0.0.1:8000/api/icon/agreement/`;
 
@@ -37,20 +56,16 @@ const AgreementInfo = ({ agreement_id, agreement_type, user_id_refer, selectedAg
     }, []);
 
     if (!selectedAgreement) {
-        return (
-            <div>
-            </div>
-        );
+        return <div></div>;
     }
 
     return (
         <div className="agreement-info-background">
-            <div className={"agreement-info-wrapper"}>
-
+            <div className={'agreement-info-wrapper'}>
                 <div className="agreement-info-details">
                     <div className="agreement-info-details">
                         <div className="image-balance">
-                            <img src={icon} className="agreement-icon" alt="Agreement Icon" />
+                            <img src={icon} onError={(e) => e.currentTarget.src = agrImage} className="account-icon" alt="Agreement Icon" />
                             <div className="agreement-balance-info">{selectedAgreement.small_desc}</div>
                         </div>
                         <span>Номер договора: {selectedAgreement.id}</span>
@@ -78,7 +93,14 @@ const AgreementInfo = ({ agreement_id, agreement_type, user_id_refer, selectedAg
                 </div>
             </div>
         </div>
-    )
-    };
+    );
+};
 
 export default AgreementInfo;
+
+const mockAgreements: Agreement[] = [
+    { id: 1, type: 'Карта', description: 'Теперь Вы можете открывать новые карты по этому договору', small_desc: 'Договор на открытие карты' },
+    { id: 2, type: 'Кредитный счет', description: 'С этим договором Вы сможете взять кредит на выгодных условиях от INK Bank', small_desc: 'Договор на открытие кредита' },
+    { id: 3, type: 'Вклад', description: 'Откройте вклад с высокими процентными ставками от INK Bank уже сегодня!', small_desc: 'Договор на открытие вклада' },
+    { id: 4, type: 'Сберегательный счет', description: 'Сохраните средства удобным и доступным способом', small_desc: 'Договор на открытие копилки' },
+];

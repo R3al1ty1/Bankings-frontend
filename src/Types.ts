@@ -19,7 +19,7 @@ export interface Account {
 export interface Agreement {
     id: number,
     type: string,
-    user_id_refer: number,
+    user_id_refer?: number,
     description: string,
     small_desc: string
 }
