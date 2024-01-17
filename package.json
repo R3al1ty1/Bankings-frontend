@@ -1,7 +1,6 @@
 {
   "homepage": "https://r3al1ty1.github.io/Bankings-frontend/",
   "name": "bankings",
-  "proxy": "http://127.0.0.1:8000",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -41,9 +40,5 @@
     "react": "^18.2.0",
     "typescript": "^5.2.2",
     "vite": "^4.4.5"
-  },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "index.js",
-  "author": "",
-  "license": "ISC"
+  }
 }
