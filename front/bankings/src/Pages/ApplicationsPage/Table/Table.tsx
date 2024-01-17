@@ -320,15 +320,18 @@ export const ApplicationsTable = () => {
                         ))}
                     </select>
                 </label>
-                <label>
-                    Почта:
-                    <input
-                        className="user-email"
-                        type="text"
-                        placeholder="Введите почту"
-                        onChange={(e) => setUserEmailFilter(e.target.value)}
-                    />
-                </label>
+                {is_moderator && (
+                    <label>
+                        Почта:
+                        <input
+                            className="user-email"
+                            type="text"
+                            placeholder="Введите почту"
+                            onChange={(e) => setUserEmailFilter(e.target.value)}
+                        />
+                    </label>
+                )}
+
 
             </div>
 

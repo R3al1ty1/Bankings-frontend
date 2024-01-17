@@ -74,28 +74,31 @@ const SearchResult = ({ account }: { account: Account }) => {
         );
     }
     const icon = `http://127.0.0.1:8000/api/icon/${account.type}/`;
-    return (
+    if (account.type != undefined) {
+        return (
 
-        <div className="account" key={account.id}>
-            <img src={icon} className="account-image" alt="Account Logo" />
-            <div className="left-container">
-                <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
-                <span className="account-name">{account.name}</span>
+            <div className="account" key={account.id}>
+                <img src={icon} className="account-image" alt="Account Logo" />
+                <div className="left-container">
+                    <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
+                    <span className="account-name">{account.name}</span>
+                </div>
+
+                <div className="right-container">
+
+                    <Link to={`/accounts/${account.id}`}>
+                        <button className="account-info-button">Открыть</button>
+                    </Link>
+
+                    <button className="account-delete-button" onClick={onDelete}>Удалить</button>
+
+
+                </div>
             </div>
 
-            <div className="right-container">
+        );
+    }
 
-                <Link to={`/accounts/${account.id}`}>
-                    <button className="account-info-button">Открыть</button>
-                </Link>
-
-                <button className="account-delete-button" onClick={onDelete}>Удалить</button>
-
-
-            </div>
-        </div>
-
-    );
 }
 
 export default SearchResult;
