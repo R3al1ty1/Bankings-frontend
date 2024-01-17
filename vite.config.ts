@@ -19,6 +19,6 @@ export default defineConfig({
       external: ['ru'],
     },
   },
-
+  base: "/Bankings-frontend/",
   plugins: [react()],
 });
