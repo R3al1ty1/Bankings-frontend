@@ -1,9 +1,14 @@
 import {Link} from "react-router-dom";
 import {Account} from "../../../Types";
-import {useContext} from "react";
+// @ts-ignore
+import React, {useContext} from "react";
 import {AccountsContext} from "../AccountList";
 import "./SearchResults.css"
 import {useToken} from "../../../hooks/useToken";
+// @ts-ignore
+import cardImage from "../../AccountPage/AccountInfo/card.png";
+// @ts-ignore
+import saveImage from "../../AccountPage/AccountInfo/save.png"
 
 const SearchResult = ({ account }: { account: Account }) => {
     const {access_token} = useToken()
@@ -51,7 +56,7 @@ const SearchResult = ({ account }: { account: Account }) => {
         const icon = `http://127.0.0.1:8000/api/icon/Карта/`;
         return (
             <div className="account" key={account.id}>
-                <img src={icon} className="account-image" alt="Account Logo" />
+                <img src={icon} onError={(e) => e.currentTarget.src = cardImage} className="account-icon" alt="Agreement Icon" />
                 <div className="left-container">
                     <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
                     <span className="account-name">{account.name}
@@ -78,7 +83,7 @@ const SearchResult = ({ account }: { account: Account }) => {
         return (
 
             <div className="account" key={account.id}>
-                <img src={icon} className="account-image" alt="Account Logo" />
+                <img src={icon} onError={(e) => e.currentTarget.src = saveImage} className="account-icon" alt="Agreement Icon" />
                 <div className="left-container">
                     <span className="account-balance">{formatCurrency(Number(account.amount as string))} {getCurrencySymbol(account.currency)}</span>
                     <span className="account-name">{account.name}</span>

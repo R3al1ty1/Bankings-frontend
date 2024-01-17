@@ -1,17 +1,19 @@
 // @ts-ignore
-import React, { useState, useEffect } from 'react';
-import { Dispatch } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Account } from '../../../Types';
 import { iAccountsMock, requestTime } from '../../../Consts';
 import { useToken } from '../../../hooks/useToken';
 import "./AccountInfo.css"
-
+// @ts-ignore
+import cardImage from "./card.png"
+// @ts-ignore
+import saveImage from "./save.png"
 
 const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { account_id: number | undefined, selectedAccount: Account | undefined, setSelectedAccount: Dispatch<Account | undefined> }) => {
     const { access_token } = useToken();
     const [isMock, setIsMock] = useState<boolean>(true);
-    const [imageUrl] = useState('');
+    const [, setImageUrl] = useState<string>('');
     const navigate = useNavigate();
 
     const getCurrencySymbol = (currencyCode: number) => {
@@ -44,7 +46,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
 
             const account: Account = await response1.json();
             setSelectedAccount(account);
-            setIsMock(false);
+            setImageUrl(`http://127.0.0.1:8000/api/icon/${selectedAccount?.type}/`);
         } catch (e) {
             MockAccountInfo();
         }
@@ -75,12 +77,13 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
         }
     };
 
-    const icon = `http://127.0.0.1:8000/api/icon/${selectedAccount?.type}/`;
-
     const MockAccountInfo = () => {
         setSelectedAccount(iAccountsMock.find((account: Account) => account.id === account_id));
         setIsMock(true);
     };
+
+    const icon = `http://127.0.0.1:8000/api/icon/${selectedAccount?.type}/`;
+    // const imageUrl = isMock ? getLocalImage() : icon;
 
     useEffect(() => {
         fetchData();
@@ -93,17 +96,46 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
         );
     }
 
+
+
     if (isMock) {
+        if (selectedAccount.type === "Карта"){
+            return (
+                <div className={"account-info-wrapper"}>
+                    <div className="account-info-details">
+                        <h3>{selectedAccount.name}</h3>
+                        <div className="image-balance">
+                            <img src={cardImage} className="account-icon" alt="Account Icon" />
+                            <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
+                        </div>
+                        <span>Номер счета: {selectedAccount.number}</span>
+                        <span>БИК банка: {selectedAccount.bic}</span>
+                        <span>Валюта: {selectedAccount.currency}</span>
+                        <span>Тип счета: {selectedAccount.type}</span>
+                        <div className="buttons-info">
+                            <button className="account-delete-button-info" onClick={onDelete}>Заморозить</button>
+                            <div className="home-button">
+                                <Link to={`/accounts`}>
+                                    <button className="account-back-button">Вернуться к счетам</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         return (
             <div className={"account-info-wrapper"}>
                 <div className="account-info-details">
                     <h3>{selectedAccount.name}</h3>
-                    <img src={imageUrl} alt="Account Icon" />
-                    <span>Баланс: 0</span>
-                    <span>Номер счета: номер Вашего счета</span>
-                    <span>БИК банка: INK</span>
-                    <span>Валюта: руб</span>
-                    <span>Тип счета: карта</span>
+                    <div className="image-balance">
+                        <img src={saveImage} className="account-icon" alt="Account Icon" />
+                        <div className="account-balance-info"><span>{formatCurrency(Number(selectedAccount.amount as string))} {getCurrencySymbol(selectedAccount.currency)}</span></div>
+                    </div>
+                    <span>Номер счета: {selectedAccount.number}</span>
+                    <span>БИК банка: {selectedAccount.bic}</span>
+                    <span>Валюта: {selectedAccount.currency}</span>
+                    <span>Тип счета: {selectedAccount.type}</span>
                     <div className="buttons-info">
                         <button className="account-delete-button-info" onClick={onDelete}>Заморозить</button>
                         <div className="home-button">
@@ -116,6 +148,7 @@ const AccountInfo = ({ account_id, selectedAccount, setSelectedAccount }: { acco
             </div>
         );
     }
+
 
     if (selectedAccount.type == "Карта"){
         return (

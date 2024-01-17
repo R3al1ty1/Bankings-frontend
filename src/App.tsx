@@ -126,9 +126,9 @@ function App() {
 
 									{is_authenticated && <Route path="/applications/empty" element={<EmptyPage />} />}
 
-									{is_authenticated && <Route path="/accounts/" element={<AccountListPage />} />}
+									<Route path="/accounts/" element={<AccountListPage />} />
 
-									{is_authenticated && <Route path="/accounts/:id" element={<AccountPage selectedAccount={selectedAccount} setSelectedAccount={setSelectedAccount} />} />}
+									<Route path="/accounts/:id" element={<AccountPage selectedAccount={selectedAccount} setSelectedAccount={setSelectedAccount} />} />
 
 
 								</Routes>

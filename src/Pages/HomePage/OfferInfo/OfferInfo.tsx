@@ -23,6 +23,13 @@ export const HomeInfo = () => {
                     </Link>
                 </div>
                 <div className="home-link">
+                    <Link to="/accounts">
+                        <div className="link-text">
+                            Счета
+                        </div>
+                    </Link>
+                </div>
+                <div className="home-link">
                     <Link to="/auth/login/">
                         <div className="link-text">
                             Вход

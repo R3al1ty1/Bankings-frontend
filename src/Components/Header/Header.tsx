@@ -165,6 +165,10 @@ const Header: React.FC = () => {
                 <Link to="/agreements" className="header-menu-link" style={{textDecoration: 'none'}}>
                     <span className="item">Договоры</span>
                 </Link>
+
+                <Link to="/accounts" className="header-menu-link" style={{textDecoration: 'none'}}>
+                    <span className="item">Счета</span>
+                </Link>
             </div>
 
             <div className={"header-right " + (isOpen ? "open" : "")}>

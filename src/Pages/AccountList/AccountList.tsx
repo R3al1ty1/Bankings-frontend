@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import SearchResultsList from "./SearchResultsList/SearchResultsList";
 import {Response} from "../../Types";
 import {Account,AccountsContextType, iAccountsContextState} from "../../Types";
-import {requestTime} from "../../Consts";
+import {iAccountsMock, requestTime} from "../../Consts";
 import axios from "axios";
 import {useToken} from "../../hooks/useToken";
 import {useAuth} from "../../hooks/useAuth";
@@ -42,10 +42,18 @@ const AccountList = () => {
             }
 
         } catch (e) {
-            // const mockAccounts = iAccountsMock;
-            // setAccounts([mockAccounts]);
+            createMock()
         }
     };
+
+    const createMock = () => {
+
+        let filteredAccounts:Account[] = iAccountsMock.filter(account => account.available == true)
+
+        filteredAccounts = filteredAccounts.filter((account) => account.name.toLowerCase().includes(query))
+
+        setAccounts(filteredAccounts)
+    }
 
     useEffect(() => {
         searchAccounts();
