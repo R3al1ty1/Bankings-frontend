@@ -15,4 +15,12 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "eslint-disable": "on"
+      }
+    }
+  ]
 }
