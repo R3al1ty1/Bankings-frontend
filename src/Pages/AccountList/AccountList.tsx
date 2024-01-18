@@ -47,13 +47,19 @@ const AccountList = () => {
     };
 
     const createMock = () => {
+        let filteredAccounts: Account[] = iAccountsMock.filter(account => account.available);
 
-        let filteredAccounts:Account[] = iAccountsMock.filter(account => account.available == true)
+        if (query.trim() !== "") {
+            filteredAccounts = filteredAccounts.filter(
+                account =>
+                    account.name.toLowerCase().includes(query.toLowerCase()) ||
+                    (account.type && account.type.toLowerCase().includes(query.toLowerCase()))
+            );
+        }
 
-        filteredAccounts = filteredAccounts.filter((account) => account.name.toLowerCase().includes(query))
+        setAccounts(filteredAccounts);
+    };
 
-        setAccounts(filteredAccounts)
-    }
 
     useEffect(() => {
         searchAccounts();

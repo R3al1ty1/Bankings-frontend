@@ -200,6 +200,7 @@ export const ApplicationsTable = () => {
             accessor: 'creation_date',
             Cell: ({ value }: { value?: string }) => {
                 if (value) {
+                    // @ts-ignore
                     const parsedDate = format(new Date(value), "d MMMM yyyy 'г.'", { locale: ruLocale });
                     return parsedDate;
                 }
