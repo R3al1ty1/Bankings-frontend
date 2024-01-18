@@ -6,7 +6,6 @@ import {requestTime} from "../../../Consts";
 import {Agreement, AgreementsContextType, iAgreementsContextState, Response} from "../../../Types";
 import AgreementsSearchList from "../AgreementsSearchList/AgreementsSearchList";
 import "./Agreements.css"
-import AgreementsOpen from "../AgreementsOpen/AgreementsOpen";
 import {useAuth} from "../../../hooks/useAuth";
 import SearchBar from "../AgreementsSearchBar/SearchBar";
 import { Link } from 'react-router-dom';
@@ -23,7 +22,7 @@ export const Agreements = () => {
     const searchAgreements = async () => {
         try {
             let apiUrl = ''
-            if (is_moderator) {
+            if (is_authenticated) {
                 apiUrl = `http://127.0.0.1:8000/api/agreements/mod?query=${query}`;
             }
             else{
@@ -50,18 +49,19 @@ export const Agreements = () => {
     useEffect(() => {
         searchAgreements();
     }, [query]);
-    if (is_moderator) {
+    if (is_authenticated) {
         return (
             <div className="accounts-wrapper">
                 <div className="button-container">
+                    {is_moderator ? (
                 <Link to="/agreements/add">
                     <button className="add-agreement-button">Добавить договор</button>
                 </Link>
+                        ): []}
                 </div>
                 <div className="bottom">
                     <div className="account-list-wrapper">
                         <div className="top-wrapper">
-                            <AgreementsOpen />
                                 <SearchBar fetchData={(query) => {
                                     setQuery(query);
                                 }}/>
@@ -81,20 +81,13 @@ export const Agreements = () => {
     }
     else {
         return (
-
             <div className="accounts-wrapper">
                 <div className="bottom">
                     <div className="account-list-wrapper">
-                        <div className="top-wrapper">
-                            <AgreementsOpen />
-                        </div>
                         <AgreementsContext.Provider value={{ agreements, setAgreements }}>
-                            {is_authenticated ? (
                                 <div className="center-wrapper">
-                                    <h2 className="my-agreements">Ваши договоры</h2>
                                     <AgreementsSearchList />
                                 </div>
-                            ) : null}
                         </AgreementsContext.Provider>
                         <div className="bottom-wrapper">
                         </div>

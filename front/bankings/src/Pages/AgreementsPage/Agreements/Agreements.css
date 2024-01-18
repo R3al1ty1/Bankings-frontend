@@ -1,6 +1,6 @@
 .agreements-wrapper {
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
     height: 100vh;
     background-color: #1e1e1e;
     color: #ffffff;
@@ -45,7 +45,6 @@ h3 {
 
 .agreement-list-wrapper {
     display: flex;
-    flex-direction: column;
     height: 100%;
 }
 

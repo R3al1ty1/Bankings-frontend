@@ -15,7 +15,7 @@ import {useApplicationForm} from "../../../hooks/useApplicationForm";
 interface Application {
     id: number;
     status: number;
-    accounts: { name: string }[];
+    accounts: { name: string, number: number}[];
     creation_date: string;
     number: number | null;
     user_email: string;
@@ -42,7 +42,7 @@ export const ApplicationsTable = () => {
                 ? 'http://127.0.0.1:8000/api/applications/mod'
                 : 'http://127.0.0.1:8000/api/applications/';
 
-            const { data: applications } = await axios.get<Application[]>(appsUrl, {
+            const { data } = await axios.get<Application[]>(appsUrl, {
                 headers: {
                     Authorization: access_token,
                 },
@@ -54,28 +54,17 @@ export const ApplicationsTable = () => {
                 },
             });
 
-            const promises = applications.map(async (app) => {
-                const numberUrl = `http://127.0.0.1:8000/api/apps/accs/${app.id}/get/`;
-                const { data: numberData } = await axios.get<{ number: number | null }[]>(numberUrl, {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                });
-
-                const numbers = numberData.map((item) => item.number);
-
-                const filteredNumbers = numbers.filter((number) => number !== null).flat();
-
-                const finalNumbers = filteredNumbers.length > 0 ? filteredNumbers : ['Нет номеров счетов'];
-
-                return { ...app, numbers: finalNumbers };
+            const applicationsWithNumbers = data.map(application => {
+                // Добавляем поле 'numbers' к каждому объекту Application
+                const appsAccs = application.accounts || [];
+                const numbers = appsAccs.map(acc => acc.number);
+                return {
+                    ...application,
+                    numbers,
+                };
             });
 
-            const updatedApplications = await Promise.all(promises);
-
-            console.log("Updated Applications:", updatedApplications);
-
-            setData(updatedApplications);
+            setData(applicationsWithNumbers);
         } catch (error) {
             setError(error as Error);
         } finally {
@@ -212,7 +201,9 @@ export const ApplicationsTable = () => {
             accessor: 'numbers',
             Cell: ({ value }: { value?: number[] }) => {
                 if (value) {
-                    return value.join(', ');
+                    return value.map((number, index) => (
+                        <span key={index}>{number}{index < value.length - 1 ? ', ' : ''}</span>
+                    ));
                 }
                 return 'Нет номеров счетов';
             },

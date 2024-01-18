@@ -20,9 +20,10 @@ const ApplicationConstructor = () => {
     }
 
     return (
-        <Link to={`/applications/${id}/`} className="application-constructor-container">
+        <Link
+            to={`/applications/${id}/`}
+            className={`application-constructor-container ${application?.accounts.length === 0 ? 'inactive' : 'active'}`}>
             <span className="title">Ваша заявка</span>
-            {application?.accounts.length > 0 && <span className="badge">{application?.accounts.length}</span>}
         </Link>
     );
 };

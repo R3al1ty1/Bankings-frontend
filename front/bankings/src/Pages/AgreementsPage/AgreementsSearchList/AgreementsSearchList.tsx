@@ -8,7 +8,7 @@ const SearchResultsList = () => {
     const { agreements } = useContext(AgreementsContext)
 
     return (
-        <div>
+        <div className="search-results-list">
             {  agreements.map(agreement  => (
                 <SearchResult agreement={agreement} key={agreement.id}/>
             ))}
