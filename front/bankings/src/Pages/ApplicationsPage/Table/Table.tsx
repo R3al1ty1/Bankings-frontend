@@ -190,7 +190,7 @@ export const ApplicationsTable = () => {
             Cell: ({ value }: { value?: string }) => {
                 if (value) {
                     // @ts-ignore
-                    const parsedDate = format(new Date(value), "d MMMM yyyy 'г.'", { locale: ruLocale });
+                    const parsedDate = format(new Date(value), "d MMMM yyyy 'г.' HH:mm", { locale: ruLocale });
                     return parsedDate;
                 }
                 return 'Нет даты';
