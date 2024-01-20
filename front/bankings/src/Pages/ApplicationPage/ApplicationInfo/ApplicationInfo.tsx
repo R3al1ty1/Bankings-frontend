@@ -3,14 +3,10 @@ import {Dispatch, useEffect} from "react";
 import {Application} from "../../../Types";
 import {requestTime, STATUSES} from "../../../Consts";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../../hooks/useAuth";
-import {useApplicationForm} from "../../../hooks/useApplicationForm";
 import {useDraftApplication} from "../../../hooks/useDraftApplication";
 import {useToken} from "../../../hooks/useToken";
 
 const ApplicationInfo = ({ application_id, selectedApplication, setSelectedApplication }:{ application_id:number | undefined, selectedApplication:Application| undefined, setSelectedApplication:Dispatch<Application | undefined> }) => {
-    const {is_moderator} = useAuth()
-    const {acceptApplication, dismissApplication} = useApplicationForm()
     const {sendApplication, deleteApplication} = useDraftApplication()
     const { access_token} = useToken();
     const navigate = useNavigate()
@@ -20,11 +16,6 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
         return foundStatus ? foundStatus.name : "Неизвестный статус";
     };
 
-    const handleAcceptClick = () => {
-        if (selectedApplication) {
-            acceptApplication(selectedApplication.id);
-        }
-    };
 
     const handleAdd = async () => {
         await sendApplication()
@@ -35,12 +26,6 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
         await deleteApplication()
         navigate("/accounts")
     }
-
-    const handleDismissClick = () => {
-        if (selectedApplication) {
-            dismissApplication(selectedApplication.id);
-        }
-    };
 
     const handleDeleteAppAcc = async (accId: number, appId: number) => {
         try {
@@ -155,20 +140,6 @@ const ApplicationInfo = ({ application_id, selectedApplication, setSelectedAppli
 
                                     </div>
                                 }
-                                    {is_moderator && selectedApplication.status == 2 &&
-                                        <div className="buttons-container">
-                                            <Link to={`/applications/`}>
-                                            <button className="accept-button" onClick={handleAcceptClick}>
-                                                Принять
-                                            </button>
-                                            </Link>
-                                            <Link to={`/applications/`}>
-                                            <button className="dismiss-button" onClick={handleDismissClick}>
-                                                Отклонить
-                                            </button>
-                                            </Link>
-                                        </div>
-                                    }
                             </div>
                         </div>
 

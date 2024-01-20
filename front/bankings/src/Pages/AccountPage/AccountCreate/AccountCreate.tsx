@@ -12,20 +12,24 @@ const AddAccountPage: React.FC = () => {
         card: {
             cardName: string,
             firstName: string,
-            lastName: string
+            lastName: string,
+            agreement: number;
         };
         credit: {
             creditName: string,
             summ: string;
             creditPurpose: string;
+            agreement: number;
         };
         deposit: {
             depositName: string
             summ: string;
             depDays: string;
+            agreement: number;
         };
         save: {
             saveName: string;
+            agreement: number;
         };
     }
 
@@ -91,20 +95,24 @@ const AddAccountPage: React.FC = () => {
             "card": {
                 cardName: cardName,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                agreement: 2,
             },
             "credit": {
                 creditName: creditName,
                 summ: summ,
-                creditPurpose: creditPurpose
+                creditPurpose: creditPurpose,
+                agreement: 3
             },
             "deposit": {
                 depositName: depositName,
                 summ: summ,
-                depDays: depDays
+                depDays: depDays,
+                agreement: 4
             },
             "save": {
                 saveName: saveName,
+                agreement: 5
             }
         };
 
@@ -115,7 +123,7 @@ const AddAccountPage: React.FC = () => {
         };
 
         try {
-            const responseCommon = await axios.post("http://127.0.0.1:8000/api/accounts/create",
+            const responseCommon = await axios.post("http://127.0.0.1:8000/api/agreements/add",
                 requestData,
                 {
                     headers: {

@@ -7,6 +7,7 @@ import axios from "axios";
 import {errorMessage} from "../../../Toasts/Toasts";
 import {useToken} from "../../../hooks/useToken";
 import {useAuth} from "../../../hooks/useAuth";
+import Cookies from "universal-cookie";
 
 const SignIn = () => {
 
@@ -40,6 +41,8 @@ const SignIn = () => {
             localStorage.setItem('userToken', response.data["access_token"])
             localStorage.setItem('userRole', response.data["is_moderator"])
             localStorage.setItem("requestStatus", '')
+            const cookies = new Cookies();
+            cookies.set('access_token', response.data['access_token'], { path: '/', maxAge: 604800 }); // maxAge указывает срок действия куки в секундах (в данном случае, 7 дней)
 
             navigate("/accounts/");
 

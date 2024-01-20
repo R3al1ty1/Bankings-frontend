@@ -6,7 +6,7 @@ import {useAuth} from "../../../hooks/useAuth";
 import "./AgreementInfo.css"
 
 
-const AgreementInfo = ({ agreement_id, agreement_type, user_id_refer, selectedAgreement}: { agreement_id: number | undefined, agreement_type: string, user_id_refer: number | undefined, selectedAgreement: Agreement | undefined, setSelectedAgreement: Dispatch<Agreement | undefined> }) => {
+const AgreementInfo = ({ agreement_id, agreement_type, selectedAgreement}: { agreement_id: number | undefined, agreement_type: string, user_id_refer: number | undefined, selectedAgreement: Agreement | undefined, setSelectedAgreement: Dispatch<Agreement | undefined> }) => {
     const {is_moderator, is_authenticated} = useAuth()
     const fetchData = async () => {
         try {
@@ -63,7 +63,7 @@ const AgreementInfo = ({ agreement_id, agreement_type, user_id_refer, selectedAg
                             <Link to={`/agreements`}>
                                 <button className="agreement-back-button">Вернуться к договорам</button>
                             </Link>
-                            {is_authenticated && user_id_refer && agrTypeDictionary[agreement_type] && (
+                            {is_authenticated && agrTypeDictionary[agreement_type] && (
                                 <Link to={`/agreements/${agrTypeDictionary[agreement_type]}`}>
                                     <button className="agreement-account-button">Оформить счет</button>
                                 </Link>
