@@ -78,7 +78,7 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!is_authenticated) {
+            if (!is_authenticated && access_token) {
                 await auth();
             }
         };

@@ -10,7 +10,6 @@ const AccountCard = ({ account, setAccounts }: { account: Account, setAccounts: 
 
     const {access_token} = useToken()
 
-
     const onDelete = async () => {
 
         try {

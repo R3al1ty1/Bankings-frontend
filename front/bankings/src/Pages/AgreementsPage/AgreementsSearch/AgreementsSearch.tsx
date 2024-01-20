@@ -1,18 +1,45 @@
-import {Link} from "react-router-dom";
-import {Agreement} from "../../../Types";
-import "./AgreementsSearch.css"
-import {useAuth} from "../../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { Agreement } from "../../../Types";
+import "./AgreementsSearch.css";
+import { useAuth } from "../../../hooks/useAuth";
+import { useToken } from "../../../hooks/useToken";
 
-const SearchResult = ({ agreement }: { agreement: Agreement }) => {
-    const agrTypeDictionary: Record<string, string> = {
-        'Карта': 'card',
-        'Кредитный счет': 'credit',
-        'Вклад': 'deposit',
-        'Сберегательный счет': 'save',
+interface SearchResultProps {
+    agreement: Agreement;
+    onDeleteAgreement: () => void;
+}
+
+const agrTypeDictionary: Record<string, string> = {
+    'Карта': 'card',
+    'Кредитный счет': 'credit',
+    'Вклад': 'deposit',
+    'Сберегательный счет': 'save',
+};
+
+const SearchResult: React.FC<SearchResultProps> = ({ agreement, onDeleteAgreement }) => {
+    const { access_token } = useToken();
+    const { is_authenticated, is_moderator } = useAuth();
+
+    const deleteAgreement = () => {
+        fetch(`http://127.0.0.1:8000/api/agreements/${agreement.id}/delete/`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'Authorization': access_token
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    onDeleteAgreement();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
     const icon = `http://127.0.0.1:8000/api/icon/agreement/`;
-    const {is_authenticated} = useAuth()
-
     return (
         <div className="open-wrapper">
             <div className="agreements-card" key={agreement.id}>
@@ -32,10 +59,14 @@ const SearchResult = ({ agreement }: { agreement: Agreement }) => {
                         </Link>
                     )}
                 </div>
+                {is_moderator && (
+                    <div className="mod-container">
+                        <button className="create-agr-button" onClick={deleteAgreement}>Удалить</button>
+                    </div>
+                )}
             </div>
-    </div>
-
+        </div>
     );
-}
+};
 
 export default SearchResult;

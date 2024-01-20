@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import "./SearchBar.css";
 import {useAuth} from "../../../hooks/useAuth";
+import {useAccountFilters} from "../../../hooks/useAcountFilters";
 
 const SearchBar = ({ fetchData}: { fetchData: (query: string) => void;}) => {
     const {is_moderator} = useAuth()
-    const [input, setInput] = useState<string>("");
     const [placeholder, setPlaceholder] = useState<string>("");
+
+    const {query, setQuery} = useAccountFilters()
 
     useEffect(() => {
         setPlaceholder(is_moderator ? "Введите номер счета" : "Введите название/тип счета");
     }, [is_moderator]);
 
     const handleChange = (value: string) => {
-        setInput(value);
+        setQuery(value);
         fetchData(value);
     };
 
@@ -28,7 +30,7 @@ const SearchBar = ({ fetchData}: { fetchData: (query: string) => void;}) => {
                 placeholder={placeholder}
                 name="query"
                 autoComplete="off"
-                value={input}
+                value={query}
                 onChange={(e) => handleChange(e.target.value)}
             />
         </form>

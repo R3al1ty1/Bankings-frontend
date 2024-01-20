@@ -6,13 +6,12 @@ import { useParams } from "react-router-dom";
 import { Link} from 'react-router-dom';
 
 const EditAgreementPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // Используем useParams для получения параметра из URL
+    const { id } = useParams<{ id: string }>();
 
-    const agreementId = parseInt(id!, 10); // Преобразуем параметр в число
+    const agreementId = parseInt(id!, 10);
 
     const [formData, setFormData] = useState({
         type: "",
-        user_id_refer: "",
         description: "",
         small_desc: "",
     });
@@ -33,7 +32,6 @@ const EditAgreementPage: React.FC = () => {
                 const agreementData = response.data;
                 setFormData({
                     type: agreementData.type.toString(),
-                    user_id_refer: agreementData.user_id_refer.toString(),
                     description: agreementData.description,
                     small_desc: agreementData.small_desc,
                 });
@@ -70,7 +68,6 @@ const EditAgreementPage: React.FC = () => {
 
             console.log("Agreement updated:", response.data);
         } catch (error) {
-            console.error("Error updating agreement:", error);
         }
     };
 
@@ -85,15 +82,6 @@ const EditAgreementPage: React.FC = () => {
                         appendDefaultTitle={false}
                         setSelectedOption={(id: number) => setSelectedType(getNameById(type, id))}
                         isDisabled={false}
-                    />
-                </div>
-                <div className="card">
-                    <label>ID пользователя:</label>
-                    <input
-                        type="text"
-                        name="user_id_refer"
-                        value={formData.user_id_refer}
-                        onChange={handleChange}
                     />
                 </div>
                 <div className="card">
